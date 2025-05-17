@@ -34,6 +34,15 @@ try:
     import data_store
     print("Imported data store successfully")
     HAS_WORKFLOW = False
+    
+    # Try to import LangGraph modules
+    try:
+        from langgraph_integration import process_employee_with_langgraph, save_workflow_results
+        print("Imported LangGraph integration successfully")
+        HAS_LANGGRAPH = True
+    except ImportError as e:
+        print(f"LangGraph integration not available: {e}")
+        HAS_LANGGRAPH = False
 except ImportError as e:
     print(f"ERROR: Required module not found: {e}")
     print("Error: Required packages not found. Please install the requirements:")
@@ -126,6 +135,12 @@ def admin_view_employee(employee_id):
     """Serve the admin view/edit employee page"""
     return send_from_directory('frontend', 'edit-employee.html')
 
+@app.route('/admin/workflow/<employee_id>')
+@login_required
+def admin_view_workflow(employee_id):
+    """Serve the workflow visualization page"""
+    return send_from_directory('frontend', 'workflow.html')
+
 @app.route('/<path:path>')
 def serve_static(path):
     """Serve static files from the frontend directory"""
@@ -181,74 +196,67 @@ def start_onboarding():
                 print(f"ERROR: Missing required field: {field}")
                 return jsonify({"error": f"Missing required field: {field}"}), 400
         
-        # Check if workflow module is available
-        if HAS_WORKFLOW:
-            # Process onboarding with the simplified workflow
-            print("Starting HR onboarding workflow for {}".format(data['name']))
-            result = process_onboarding(data)
+        # First create basic employee data
+        print(f"Creating basic employee data for {data['name']} (without workflow)")
+        employee = data_store.add_employee({
+            "name": data["name"],
+            "position": data["position"],
+            "department": data["department"],
+            "startDate": data["startDate"],
+            "status": "pending"
+        })
+        
+        result = {
+            "success": True,
+            "message": f"Process started for {data['name']}",
+            "employee_id": employee["id"]
+        }
+        
+        # Check if LangGraph is available
+        if HAS_LANGGRAPH:
+            # Process the employee with LangGraph workflow
+            print(f"Processing employee {data['name']} with LangGraph workflow")
+            workflow_result = process_employee_with_langgraph(data)
             
-            # Save the employee data to our data store
-            employee_data = {
-                "name": data["name"],
-                "position": data["position"],
-                "department": data["department"],
-                "startDate": data["startDate"],
-                "equipmentNeeds": result["employee"]["equipmentNeeds"],
-                "systemAccess": result["employee"]["systemAccess"],
-                "trainingRequirements": result["employee"]["trainingRequirements"],
-                "status": result["employee"]["status"],
-                "hrNotes": result["hrNotes"],
-                "itNotes": result["itNotes"]
-            }
+            # Save workflow results
+            if workflow_result["success"]:
+                results_file = save_workflow_results(workflow_result, employee["id"])
+                print(f"Workflow results saved to {results_file}")
+                
+                # Update employee record with workflow info
+                data_store.update_employee(employee["id"], {
+                    "status": "onboarding",
+                    "documents": workflow_result.get("documents", []),
+                    "workflow_status": "processed",
+                    "workflow_completed_steps": workflow_result.get("completed_steps", [])
+                })
+                
+                # Add workflow information to result
+                result["workflow"] = {
+                    "status": "success",
+                    "steps_completed": len(workflow_result.get("completed_steps", [])),
+                    "documents_prepared": len(workflow_result.get("documents", [])),
+                }
+            else:
+                print(f"LangGraph workflow failed for {data['name']}: {workflow_result.get('error', 'Unknown error')}")
+                result["workflow"] = {
+                    "status": "failed",
+                    "error": workflow_result.get("error", "Unknown error")
+                }
         else:
-            # Create basic employee data without the workflow
-            print("Creating basic employee data for {} (without workflow)".format(data['name']))
-            employee_data = {
-                "name": data["name"],
-                "position": data["position"],
-                "department": data["department"],
-                "startDate": data["startDate"],
-                "equipmentNeeds": ["Laptop", "Phone"],
-                "systemAccess": ["Email", "Basic Systems"],
-                "trainingRequirements": ["Orientation", "Department Training"],
-                "status": "New",
-                "hrNotes": ["Created without workflow processing"],
-                "itNotes": ["Basic equipment setup required"]
-            }
-            
-            # Create a basic result structure for the response
-            result = {
-                "employee": {
-                    "name": data["name"],
-                    "position": data["position"],
-                    "department": data["department"],
-                    "startDate": data["startDate"],
-                    "equipmentNeeds": employee_data["equipmentNeeds"],
-                    "systemAccess": employee_data["systemAccess"],
-                    "trainingRequirements": employee_data["trainingRequirements"],
-                    "status": employee_data["status"]
-                },
-                "hrNotes": employee_data["hrNotes"],
-                "itNotes": employee_data["itNotes"]
+            # Use simple process without LangGraph
+            print(f"LangGraph not available, using simple process for {data['name']}")
+            result["workflow"] = {
+                "status": "skipped",
+                "message": "LangGraph workflow not available"
             }
         
-        # Add to data store
-        data_store.add_employee(employee_data)
-        
-        print("Process completed successfully for {}".format(data['name']))
+        print(f"Process completed successfully for {data['name']}")
         return jsonify(result)
-    
     except Exception as e:
-        print("ERROR running workflow: {}".format(e))
-        print("Detailed traceback:")
+        print(f"ERROR in start_onboarding: {str(e)}")
         traceback.print_exc()
-        error_type = type(e).__name__
-        error_msg = str(e)
-        return jsonify({
-            "error": error_msg,
-            "error_type": error_type,
-            "details": traceback.format_exc()
-        }), 500
+        return jsonify({"error": str(e)}), 500
 
 # Admin API endpoints
 @app.route('/api/admin/employees', methods=['GET'])
@@ -366,6 +374,70 @@ def delete_employee(employee_id):
             return jsonify({"error": "Failed to delete employee"}), 500
     except Exception as e:
         print("Error deleting employee:", e)
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/admin/employees/<employee_id>/workflow', methods=['GET'])
+@login_required
+def get_employee_workflow(employee_id):
+    """Get workflow details for an employee"""
+    print(f"API: Fetching workflow for employee {employee_id}")
+    print("Request headers:", request.headers)
+    print("Session:", ', '.join([f"{k}={v}" for k, v in session.items()]))
+    
+    try:
+        # First get the employee data
+        employee = data_store.get_employee(employee_id)
+        if not employee:
+            return jsonify({"error": "Employee not found"}), 404
+        
+        # Check if there are workflow files
+        workflow_dir = "data/workflows"
+        if not os.path.exists(workflow_dir):
+            return jsonify({
+                "employee_id": employee_id,
+                "name": employee.get("name", ""),
+                "workflow_available": False,
+                "message": "No workflow data available"
+            })
+        
+        # Find workflow files for this employee
+        workflow_files = [f for f in os.listdir(workflow_dir) 
+                         if f.startswith(f"workflow_{employee_id}_") and f.endswith(".json")]
+        
+        if not workflow_files:
+            return jsonify({
+                "employee_id": employee_id,
+                "name": employee.get("name", ""),
+                "workflow_available": False,
+                "message": "No workflow data found for this employee"
+            })
+        
+        # Sort by timestamp (newest first)
+        workflow_files.sort(reverse=True)
+        latest_workflow = workflow_files[0]
+        
+        # Load the workflow data
+        with open(os.path.join(workflow_dir, latest_workflow), 'r') as f:
+            workflow_data = json.load(f)
+        
+        # Return combined data
+        response = {
+            "employee_id": employee_id,
+            "name": employee.get("name", ""),
+            "position": employee.get("position", ""),
+            "department": employee.get("department", ""),
+            "workflow_available": True,
+            "workflow": workflow_data,
+            "completed_steps": employee.get("workflow_completed_steps", []),
+            "timestamp": latest_workflow.split("_")[-1].split(".")[0]
+        }
+        
+        print(f"API: Returning workflow data for employee {employee_id}")
+        return jsonify(response)
+        
+    except Exception as e:
+        print(f"ERROR in get_employee_workflow: {str(e)}")
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
 
