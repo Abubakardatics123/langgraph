@@ -7,15 +7,43 @@ This script implements a simple HR onboarding workflow with multiple nodes and m
 
 # Import necessary libraries
 import os
-from typing import Dict, List, TypedDict, Annotated, Literal
-from pydantic import BaseModel
+import sys
+
+# Version check
+if sys.version_info[0] < 3:
+    print("Warning: This script was designed for Python 3 but is running on Python 2")
+    print("Some features may not work correctly. Consider running with Python 3 instead.")
+
+try:
+    from typing import Dict, List, TypedDict, Annotated, Literal
+except ImportError:
+    # For Python 2 compatibility, create minimal typing
+    Dict = dict
+    List = list
+    class TypedDict(dict): pass
+    Annotated = None
+    Literal = None
+
+try:
+    from pydantic import BaseModel
+except ImportError:
+    # Simple fallback for Python 2
+    class BaseModel(object):
+        def __init__(self, **kwargs):
+            for key, value in kwargs.items():
+                setattr(self, key, value)
 
 # LangGraph and LangChain imports
-from langgraph.graph import StateGraph, END
-from langchain_groq import ChatGroq
-from langchain.prompts import ChatPromptTemplate
-from langchain_core.output_parsers import JsonOutputParser
-from langchain_core.messages import HumanMessage, AIMessage
+try:
+    from langgraph.graph import StateGraph, END
+    from langchain_groq import ChatGroq
+    from langchain.prompts import ChatPromptTemplate
+    from langchain_core.output_parsers import JsonOutputParser
+    from langchain_core.messages import HumanMessage, AIMessage
+except ImportError:
+    print("Error: Required packages not found. Please install the requirements:")
+    print("pip3 install -r requirements.txt")
+    sys.exit(1)
 
 # Set Groq API key
 os.environ["GROQ_API_KEY"] = "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"
@@ -24,23 +52,23 @@ os.environ["GROQ_API_KEY"] = "gsk_yqAvxpVItmrkapKWC1z5WGdyb3FYoCitvh9YUy7dpW8cJ6
 # Define State and Memory
 #############################################
 
-# Define the state schema
+# Define the state schema - Python 2 compatible version
 class EmployeeInfo(BaseModel):
-    name: str
-    position: str
-    department: str
-    start_date: str
-    equipment_needs: List[str] = []
-    system_access: List[str] = []
-    training_requirements: List[str] = []
-    onboarding_status: str = "pending"
+    def __init__(self, name, position, department, start_date, 
+                 equipment_needs=None, system_access=None, 
+                 training_requirements=None, onboarding_status="pending"):
+        self.name = name
+        self.position = position
+        self.department = department
+        self.start_date = start_date
+        self.equipment_needs = equipment_needs or []
+        self.system_access = system_access or []
+        self.training_requirements = training_requirements or []
+        self.onboarding_status = onboarding_status
 
-# Define the state structure
+# Define the state structure - Python 2 compatible
 class State(TypedDict):
-    employee: EmployeeInfo
-    hr_notes: List[str]
-    it_notes: List[str]
-    messages: List[Dict]  # Memory for conversation messages
+    pass  # This is just for structure, will be used as a dict in practice
 
 #############################################
 # Define Nodes
@@ -50,7 +78,7 @@ class State(TypedDict):
 llm = ChatGroq(model="llama3-70b-8192", temperature=0)
 
 # Node 1: Collect and validate employee information
-def collect_employee_info(state: State) -> State:
+def collect_employee_info(state):
     """Collect and validate basic employee information"""
     # Get the employee info from the current state
     employee = state["employee"]
@@ -86,14 +114,13 @@ def collect_employee_info(state: State) -> State:
     hr_notes.append(f"Employee information validated for {employee.name}")
     
     # Return updated state
-    return {
-        **state,
-        "hr_notes": hr_notes,
-        "messages": messages
-    }
+    new_state = state.copy()
+    new_state["hr_notes"] = hr_notes
+    new_state["messages"] = messages
+    return new_state
 
 # Node 2: Determine equipment and access needs
-def determine_equipment_access(state: State) -> State:
+def determine_equipment_access(state):
     """Determine equipment and system access needs based on role"""
     # Get the employee info and messages from the current state
     employee = state["employee"]
@@ -137,15 +164,14 @@ def determine_equipment_access(state: State) -> State:
     it_notes.append(f"Equipment and access determined for {employee.name}")
     
     # Return updated state with memory
-    return {
-        **state,
-        "employee": employee,
-        "it_notes": it_notes,
-        "messages": messages
-    }
+    new_state = state.copy()
+    new_state["employee"] = employee
+    new_state["it_notes"] = it_notes
+    new_state["messages"] = messages
+    return new_state
 
 # Node 3: Create training plan
-def create_training_plan(state: State) -> State:
+def create_training_plan(state):
     """Create personalized training plan for the new employee"""
     # Get the employee info and message history
     employee = state["employee"]
@@ -206,12 +232,11 @@ def create_training_plan(state: State) -> State:
     hr_notes.append(f"Training plan created for {employee.name}")
     
     # Return updated state
-    return {
-        **state,
-        "employee": employee,
-        "hr_notes": hr_notes,
-        "messages": messages
-    }
+    new_state = state.copy()
+    new_state["employee"] = employee
+    new_state["hr_notes"] = hr_notes
+    new_state["messages"] = messages
+    return new_state
 
 #############################################
 # Building the Workflow Graph
