@@ -8,6 +8,7 @@ This script implements a simple HR onboarding workflow with multiple nodes and m
 # Import necessary libraries
 import os
 import sys
+import copy  # Add copy module for deepcopy
 
 # Version check
 if sys.version_info[0] < 3:
@@ -71,7 +72,13 @@ class EmployeeInfo(object):
 
 # Define the state structure - Python 2 compatible
 class State(dict):
-    pass  # This is just for structure, will be used as a dict in practice
+    """Custom state class that extends dict to ensure compatibility with LangGraph"""
+    def __init__(self, *args, **kwargs):
+        super(State, self).__init__(*args, **kwargs)
+    
+    def copy(self):
+        """Return a deep copy of the state"""
+        return copy.deepcopy(self)
 
 #############################################
 # Define Nodes
@@ -90,6 +97,11 @@ def collect_employee_info(state):
     """Collect and validate basic employee information"""
     try:
         # Get the employee info from the current state
+        if not state:
+            print("Error: State is empty")
+            print("Current state:", state)
+            raise KeyError("State is empty")
+            
         if 'employee' not in state:
             print("Error: 'employee' key missing from state")
             print("Current state keys:", state.keys())
@@ -117,11 +129,12 @@ def collect_employee_info(state):
             start_date=employee.start_date
         )
         
-        # Get response from LLM
-        response = llm.invoke([HumanMessage(content=formatted_prompt.content)])
+        # Get response from LLM - fixing the content attribute issue
+        human_message = HumanMessage(content=str(formatted_prompt))
+        response = llm.invoke([human_message])
         
         # Store the message in memory
-        messages.append({"role": "user", "content": formatted_prompt.content})
+        messages.append({"role": "user", "content": str(formatted_prompt)})
         messages.append({"role": "assistant", "content": response.content})
         
         # Add a note to HR notes
@@ -129,7 +142,7 @@ def collect_employee_info(state):
         hr_notes.append("Employee information validated for {}".format(employee.name))
         
         # Return updated state
-        new_state = state.copy()
+        new_state = copy.deepcopy(state)
         new_state["hr_notes"] = hr_notes
         new_state["messages"] = messages
         return new_state
@@ -195,7 +208,7 @@ def determine_equipment_access(state):
         it_notes.append("Equipment and access determined for {}".format(employee.name))
         
         # Return updated state with memory
-        new_state = state.copy()
+        new_state = copy.deepcopy(state)
         new_state["employee"] = employee
         new_state["it_notes"] = it_notes
         new_state["messages"] = messages
@@ -275,7 +288,7 @@ def create_training_plan(state):
         hr_notes.append("Training plan created for {}".format(employee.name))
         
         # Return updated state
-        new_state = state.copy()
+        new_state = copy.deepcopy(state)
         new_state["employee"] = employee
         new_state["hr_notes"] = hr_notes
         new_state["messages"] = messages
@@ -308,7 +321,7 @@ def build_workflow():
         # Set the entry point
         workflow.set_entry_point("collect_employee_info")
         
-        # Compile the graph
+        # Compile the graph with no special options for better compatibility
         return workflow.compile()
     except Exception as e:
         print("Error building workflow: {}".format(e))

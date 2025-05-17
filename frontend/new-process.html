@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Process - HR Workflow Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/admin-styles.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar">
+                <div class="position-sticky">
+                    <div class="sidebar-header text-center py-4 text-white">
+                        <h3>HR Admin</h3>
+                        <p>Onboarding Workflow</p>
+                    </div>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin" id="nav-dashboard">
+                                <i class="fas fa-tachometer-alt me-2"></i>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/employees" id="nav-employees">
+                                <i class="fas fa-users me-2"></i>
+                                Employees
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/admin/employees/new" id="nav-new-employee">
+                                <i class="fas fa-plus-circle me-2"></i>
+                                New Employee
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/onboarding">
+                                <i class="fas fa-user-plus me-2"></i>
+                                Onboarding Form
+                            </a>
+                        </li>
+                        <li class="nav-item mt-3">
+                            <a class="nav-link text-danger" href="#" id="logout-btn">
+                                <i class="fas fa-sign-out-alt me-2"></i>
+                                Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2" id="page-title">New Process</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <div class="btn-group me-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" id="back-to-dashboard">
+                                <i class="fas fa-arrow-left"></i> Back to Dashboard
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- New Process Section -->
+                <div id="new-process-section">
+                    <div class="row">
+                        <div class="col-md-8 offset-md-2">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 fw-bold text-primary">Start New Onboarding Process</h6>
+                                </div>
+                                <div class="card-body">
+                                    <form id="new-process-form">
+                                        <div class="mb-3">
+                                            <label for="process-type" class="form-label">Process Type</label>
+                                            <select class="form-select" id="process-type" required>
+                                                <option value="">Select a process type</option>
+                                                <option value="onboarding">Employee Onboarding</option>
+                                                <option value="offboarding" disabled>Employee Offboarding (Coming Soon)</option>
+                                                <option value="transfer" disabled>Department Transfer (Coming Soon)</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div id="onboarding-fields">
+                                            <div class="mb-3">
+                                                <label for="name" class="form-label">Full Name</label>
+                                                <input type="text" class="form-control" id="name" name="name">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="position" class="form-label">Position</label>
+                                                <input type="text" class="form-control" id="position" name="position">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="department" class="form-label">Department</label>
+                                                <select class="form-select" id="department" name="department">
+                                                    <option value="">Select a department</option>
+                                                    <option value="Engineering">Engineering</option>
+                                                    <option value="Marketing">Marketing</option>
+                                                    <option value="Sales">Sales</option>
+                                                    <option value="HR">Human Resources</option>
+                                                    <option value="Finance">Finance</option>
+                                                    <option value="Operations">Operations</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="startDate" class="form-label">Start Date</label>
+                                                <input type="date" class="form-control" id="startDate" name="startDate">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="d-grid gap-2">
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="fas fa-play me-2"></i> Start Process
+                                            </button>
+                                            <button type="button" class="btn btn-secondary" id="cancel-btn">
+                                                <i class="fas fa-times me-2"></i> Cancel
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Loading Modal -->
+    <div class="modal fade" id="loadingModal" tabindex="-1" aria-labelledby="loadingModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center py-4">
+                    <div class="spinner-border text-primary mb-3" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <h5 class="modal-title" id="loadingModalLabel">Processing...</h5>
+                    <p class="text-muted">Please wait while we set up the onboarding process.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="successModalLabel">Process Started</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center py-4">
+                    <i class="fas fa-check-circle fa-4x text-success mb-3"></i>
+                    <h5>Onboarding Process Initiated</h5>
+                    <p class="text-muted">The employee has been added to the system.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="view-dashboard-btn">View on Dashboard</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            checkAuthentication();
+
+            // Initialize modals
+            const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+            const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+            
+            // Handle process type change
+            const processType = document.getElementById('process-type');
+            const onboardingFields = document.getElementById('onboarding-fields');
+            
+            processType.addEventListener('change', function() {
+                if (this.value === 'onboarding') {
+                    onboardingFields.style.display = 'block';
+                } else {
+                    onboardingFields.style.display = 'none';
+                }
+            });
+            
+            // Handle form submission
+            const newProcessForm = document.getElementById('new-process-form');
+            newProcessForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Validate form
+                if (!validateForm()) {
+                    return;
+                }
+                
+                // Show loading modal
+                loadingModal.show();
+                
+                // Get form data
+                const employeeData = {
+                    name: document.getElementById('name').value,
+                    position: document.getElementById('position').value,
+                    department: document.getElementById('department').value,
+                    startDate: document.getElementById('startDate').value
+                };
+                
+                try {
+                    // Call the API to start onboarding
+                    const response = await fetch('/api/start-onboarding', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(employeeData)
+                    });
+                    
+                    // Hide loading modal
+                    loadingModal.hide();
+                    
+                    if (response.ok) {
+                        // Show success modal
+                        successModal.show();
+                    } else {
+                        const data = await response.json();
+                        alert('Error: ' + (data.error || 'Failed to start onboarding process'));
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    loadingModal.hide();
+                    alert('An error occurred. Please try again.');
+                }
+            });
+            
+            // Handle back to dashboard button
+            document.getElementById('back-to-dashboard').addEventListener('click', function() {
+                window.location.href = '/admin';
+            });
+            
+            // Handle cancel button
+            document.getElementById('cancel-btn').addEventListener('click', function() {
+                window.location.href = '/admin';
+            });
+            
+            // Handle view dashboard button in success modal
+            document.getElementById('view-dashboard-btn').addEventListener('click', function() {
+                successModal.hide();
+                window.location.href = '/admin';
+            });
+        });
+        
+        // Validate form
+        function validateForm() {
+            const processType = document.getElementById('process-type').value;
+            
+            if (!processType) {
+                alert('Please select a process type');
+                return false;
+            }
+            
+            if (processType === 'onboarding') {
+                const name = document.getElementById('name').value;
+                const position = document.getElementById('position').value;
+                const department = document.getElementById('department').value;
+                const startDate = document.getElementById('startDate').value;
+                
+                if (!name || !position || !department || !startDate) {
+                    alert('Please fill out all required fields');
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+        
+        // Check authentication
+        async function checkAuthentication() {
+            try {
+                const response = await fetch('/api/admin/check-auth');
+                if (!response.ok) {
+                    // Redirect to login if not authenticated
+                    window.location.href = '/login';
+                }
+            } catch (error) {
+                console.error('Authentication check failed:', error);
+                window.location.href = '/login';
+            }
+        }
+    </script>
+</body>
+</html> 

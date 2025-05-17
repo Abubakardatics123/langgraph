@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Onboarding Workflow</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="d-flex justify-content-between align-items-center my-4">
+            <div>
+                <h1 class="display-5">HR Onboarding Workflow</h1>
+                <p class="lead">A streamlined process for onboarding new employees</p>
+            </div>
+            <div>
+                <a href="/login" class="btn btn-outline-primary">
+                    <i class="fas fa-user-shield me-2"></i>Admin Login
+                </a>
+            </div>
+        </header>
+
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <!-- Employee Information Form -->
+                <div id="employee-form" class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h3>New Employee Information</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="onboarding-form">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="position" class="form-label">Position</label>
+                                <input type="text" class="form-control" id="position" name="position" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="department" class="form-label">Department</label>
+                                <select class="form-select" id="department" name="department" required>
+                                    <option value="">Select a department</option>
+                                    <option value="Engineering">Engineering</option>
+                                    <option value="Marketing">Marketing</option>
+                                    <option value="Sales">Sales</option>
+                                    <option value="HR">Human Resources</option>
+                                    <option value="Finance">Finance</option>
+                                    <option value="Operations">Operations</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="startDate" class="form-label">Start Date</label>
+                                <input type="date" class="form-control" id="startDate" name="startDate" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100" id="submit-btn">Start Onboarding Process</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Loading Indicator -->
+                <div id="loading" class="text-center my-5 d-none">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-3">Processing onboarding workflow...</p>
+                    <div class="progress mt-3">
+                        <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- Results Display -->
+                <div id="results" class="d-none">
+                    <div class="card mb-4">
+                        <div class="card-header bg-success text-white">
+                            <h3>Onboarding Complete</h3>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="mb-3">Employee Information</h4>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><strong>Name:</strong> <span id="result-name"></span></p>
+                                    <p><strong>Position:</strong> <span id="result-position"></span></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Department:</strong> <span id="result-department"></span></p>
+                                    <p><strong>Start Date:</strong> <span id="result-startDate"></span></p>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <h4>Equipment Needs</h4>
+                                <ul id="equipment-list" class="list-group list-group-flush"></ul>
+                            </div>
+
+                            <div class="mb-3">
+                                <h4>System Access</h4>
+                                <ul id="access-list" class="list-group list-group-flush"></ul>
+                            </div>
+
+                            <div class="mb-3">
+                                <h4>Training Requirements</h4>
+                                <ul id="training-list" class="list-group list-group-flush"></ul>
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <div class="card border-info">
+                                        <div class="card-header bg-info text-white">
+                                            <h5>HR Notes</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <ul id="hr-notes" class="list-unstyled"></ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card border-info">
+                                        <div class="card-header bg-info text-white">
+                                            <h5>IT Notes</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <ul id="it-notes" class="list-unstyled"></ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button id="restart-btn" class="btn btn-primary w-100 mt-4">Start New Onboarding</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Error Display -->
+                <div id="error-container" class="alert alert-danger d-none" role="alert">
+                    <h4 class="alert-heading">Error</h4>
+                    <p id="error-message"></p>
+                    <button id="error-retry-btn" class="btn btn-danger mt-3">Try Again</button>
+                </div>
+            </div>
+        </div>
+
+        <footer class="text-center my-5">
+            <hr>
+            <p>HR Onboarding Workflow - Powered by LangGraph and LangChain</p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html> 

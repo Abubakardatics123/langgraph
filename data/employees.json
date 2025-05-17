@@ -1,0 +1,331 @@
+[
+  {
+    "name": "abubakar naeem",
+    "position": "BA",
+    "department": "Marketing",
+    "startDate": "2025-05-02",
+    "equipmentNeeds": [
+      "Laptop",
+      "Mouse",
+      "Keyboard",
+      "Headset",
+      "Marketing Software License (e.g. Adobe Creative Cloud)"
+    ],
+    "systemAccess": [
+      "Email (Company Domain)",
+      "Marketing Automation Platform (MAP)",
+      "Customer Relationship Management (CRM) System",
+      "Intranet Access",
+      "Shared Drive Access (Marketing Department)"
+    ],
+    "trainingRequirements": [
+      "Company Orientation",
+      "Marketing Automation Training",
+      "CRM System Training",
+      "Marketing Software Training (Adobe Creative Cloud)",
+      "Email Etiquette and Best Practices",
+      "Marketing Department Onboarding",
+      "MAP Training",
+      "Intranet and Shared Drive Navigation"
+    ],
+    "status": "Completed",
+    "hrNotes": [
+      "Employee information validated for abubakar naeem",
+      "Training plan created for abubakar naeem"
+    ],
+    "itNotes": [
+      "Equipment and access determined for abubakar naeem"
+    ],
+    "id": "1747514238",
+    "created_at": "2025-05-18T01:37:18.809101",
+    "updated_at": "2025-05-18T01:37:18.809101"
+  },
+  {
+    "name": "abubakar naeem",
+    "position": "BA",
+    "department": "Marketing",
+    "startDate": "2025-05-08",
+    "id": "1747514644",
+    "created_at": "2025-05-18T01:44:04.652459",
+    "updated_at": "2025-05-18T01:44:04.652459",
+    "status": "New"
+  },
+  {
+    "name": "John Doe",
+    "position": "Software Engineer",
+    "department": "Engineering",
+    "startDate": "2023-09-01",
+    "id": "1747514689",
+    "created_at": "2025-05-18T01:44:49.713974",
+    "updated_at": "2025-05-18T01:44:49.713974",
+    "status": "New"
+  },
+  {
+    "name": "abubakar naeem",
+    "position": "BA",
+    "department": "Sales",
+    "startDate": "2024-11-01",
+    "equipmentNeeds": [
+      "Laptop",
+      "Headset",
+      "Mouse",
+      "Scanner"
+    ],
+    "systemAccess": [
+      "Sales CRM",
+      "Email",
+      "Microsoft Office",
+      "Sales Analytics Tool"
+    ],
+    "trainingRequirements": [
+      "Sales CRM Training",
+      "Microsoft Office Training",
+      "Sales Analytics Tool Training",
+      "Email Etiquette and Best Practices",
+      "Scanner Operation and Maintenance",
+      "Laptop and Peripheral Setup",
+      "Headset and Audio Settings",
+      "Mouse and Keyboard Familiarization",
+      "Sales Process and Methodology Overview",
+      "Department-Specific Policies and Guidelines"
+    ],
+    "status": "Completed",
+    "hrNotes": [
+      "Employee information validated for abubakar naeem",
+      "Training plan created for abubakar naeem"
+    ],
+    "itNotes": [
+      "Equipment and access determined for abubakar naeem"
+    ],
+    "id": "1747515011",
+    "created_at": "2025-05-18T01:50:11.378697",
+    "updated_at": "2025-05-18T01:50:11.378697"
+  },
+  {
+    "name": "abubakar naeem",
+    "position": "BA",
+    "department": "Sales",
+    "startDate": "2025-05-17",
+    "equipmentNeeds": [
+      "Laptop",
+      "Headset",
+      "Mouse",
+      "Scanner"
+    ],
+    "systemAccess": [
+      "Sales CRM",
+      "Email",
+      "Microsoft Office",
+      "Sales Analytics Tool"
+    ],
+    "trainingRequirements": [
+      "Sales CRM Training",
+      "Email Etiquette and Best Practices",
+      "Microsoft Office Suite",
+      "Sales Analytics Tool Training",
+      "Scanner Operation and Maintenance",
+      "Laptop and Peripheral Devices Orientation",
+      "Headset and Audio Equipment Usage",
+      "Mouse and Keyboard Familiarization",
+      "Business Analyst Role Overview",
+      "Sales Department Orientation",
+      "Company Policies and Procedures Overview"
+    ],
+    "status": "Completed",
+    "hrNotes": [
+      "Employee information validated for abubakar naeem",
+      "Training plan created for abubakar naeem"
+    ],
+    "itNotes": [
+      "Equipment and access determined for abubakar naeem"
+    ],
+    "id": "1747516343",
+    "created_at": "2025-05-18T02:12:23.536187",
+    "updated_at": "2025-05-18T02:12:23.536187"
+  },
+  {
+    "name": "abubakar naeem",
+    "position": "BA",
+    "department": "Marketing",
+    "startDate": "2025-05-16",
+    "equipmentNeeds": [
+      "Laptop",
+      "Mouse",
+      "Keyboard",
+      "Headset",
+      "Marketing Software License (e.g. Adobe Creative Cloud)"
+    ],
+    "systemAccess": [
+      "Email (Company Domain)",
+      "Marketing Automation Platform (MAP)",
+      "Customer Relationship Management (CRM) System",
+      "Intranet Access",
+      "Shared Drive Access (Marketing Department)"
+    ],
+    "trainingRequirements": [
+      "Company Orientation",
+      "Marketing Department Overview",
+      "Business Analyst Role Expectations",
+      "Marketing Automation Platform (MAP) Training",
+      "Customer Relationship Management (CRM) System Training",
+      "Marketing Software License (e.g. Adobe Creative Cloud) Training",
+      "Email (Company Domain) Training",
+      "Intranet Access Training",
+      "Shared Drive Access (Marketing Department) Training",
+      "Job-Specific Skills Training"
+    ],
+    "status": "Completed",
+    "hrNotes": [
+      "Employee information validated for abubakar naeem",
+      "Training plan created for abubakar naeem"
+    ],
+    "itNotes": [
+      "Equipment and access determined for abubakar naeem"
+    ],
+    "id": "1747516371",
+    "created_at": "2025-05-18T02:12:51.561669",
+    "updated_at": "2025-05-18T02:12:51.561669"
+  },
+  {
+    "name": "abubakar naeem",
+    "position": "BA",
+    "department": "Sales",
+    "startDate": "2025-05-08",
+    "equipmentNeeds": [
+      "Laptop",
+      "Headset",
+      "Mouse",
+      "Scanner"
+    ],
+    "systemAccess": [
+      "Sales CRM",
+      "Email",
+      "Microsoft Office",
+      "Sales Analytics Tool"
+    ],
+    "trainingRequirements": [
+      "Sales CRM Training",
+      "Microsoft Office Training",
+      "Sales Analytics Tool Training",
+      "Email Etiquette Training",
+      "Scanner Operation Training",
+      "Headset and Audio Equipment Training",
+      "Laptop and Mouse Familiarization",
+      "Business Analyst Role Overview",
+      "Sales Department Orientation",
+      "IT Security and Best Practices"
+    ],
+    "status": "Completed",
+    "hrNotes": [
+      "Employee information validated for abubakar naeem",
+      "Training plan created for abubakar naeem"
+    ],
+    "itNotes": [
+      "Equipment and access determined for abubakar naeem"
+    ],
+    "id": "1747516433",
+    "created_at": "2025-05-18T02:13:53.305420",
+    "updated_at": "2025-05-18T02:13:53.305420"
+  },
+  {
+    "name": "Muhammad Luqman",
+    "position": "HR",
+    "department": "Marketing",
+    "startDate": "2025-05-31",
+    "equipmentNeeds": [
+      "Laptop",
+      "Monitor",
+      "Keyboard",
+      "Mouse"
+    ],
+    "systemAccess": [
+      "HR System",
+      "Employee Database",
+      "Microsoft Office Suite",
+      "Email"
+    ],
+    "trainingRequirements": [
+      "HR System Training",
+      "Employee Database Navigation",
+      "Email Etiquette",
+      "Microsoft Office Suite Basics",
+      "Company Policies and Procedures",
+      "Job-Specific Training for HR Role in Marketing"
+    ],
+    "status": "Completed",
+    "hrNotes": [
+      "Employee information validated for Muhammad Luqman",
+      "Training plan created for Muhammad Luqman"
+    ],
+    "itNotes": [
+      "Equipment and access determined for Muhammad Luqman"
+    ],
+    "id": "1747516452",
+    "created_at": "2025-05-18T02:14:12.564319",
+    "updated_at": "2025-05-18T02:14:12.564319"
+  },
+  {
+    "name": "Moosa",
+    "position": "SE",
+    "department": "Engineering",
+    "startDate": "2025-05-09",
+    "equipmentNeeds": [
+      "Laptop (Engineering specs)",
+      "External Monitor",
+      "Engineering Software License (e.g. AutoCAD, SolidWorks)"
+    ],
+    "systemAccess": [
+      "Engineering Department Shared Drive",
+      "JIRA Project Management Tool",
+      "Git Repository Access",
+      "Company Intranet"
+    ],
+    "trainingRequirements": [
+      "Engineering Software License (e.g. AutoCAD, SolidWorks) Training",
+      "JIRA Project Management Tool Training",
+      "Git Repository Access Training",
+      "Company Intranet Training",
+      "Engineering Department Shared Drive Training",
+      "Laptop (Engineering specs) and External Monitor Setup and Troubleshooting"
+    ],
+    "status": "Completed",
+    "hrNotes": [
+      "Employee information validated for Moosa",
+      "Training plan created for Moosa"
+    ],
+    "itNotes": [
+      "Equipment and access determined for Moosa"
+    ],
+    "id": "1747516553",
+    "created_at": "2025-05-18T02:15:53.657356",
+    "updated_at": "2025-05-18T02:15:53.657356"
+  },
+  {
+    "name": "Muhammad Luqman",
+    "position": "BA",
+    "department": "Marketing",
+    "startDate": "2025-05-30",
+    "equipmentNeeds": [
+      "Laptop",
+      "Phone"
+    ],
+    "systemAccess": [
+      "Email",
+      "Basic Systems"
+    ],
+    "trainingRequirements": [
+      "Orientation",
+      "Department Training"
+    ],
+    "status": "New",
+    "hrNotes": [
+      "Created without workflow processing"
+    ],
+    "itNotes": [
+      "Basic equipment setup required"
+    ],
+    "id": "1747518120",
+    "created_at": "2025-05-18T02:42:00.269629",
+    "updated_at": "2025-05-18T02:42:00.269629"
+  }
+]
