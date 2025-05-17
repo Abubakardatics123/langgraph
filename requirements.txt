@@ -1,8 +1,12 @@
 langgraph>=0.0.15
-langchain>=0.0.267
+langchain>=0.0.267,<0.1.0
 langchain-groq>=0.0.3
-langchain-core>=0.0.27
-langchain-community>=0.0.8
-pydantic>=2.0.0
+langchain-core>=0.0.27,<0.1.0
+langchain-community>=0.0.8,<0.1.0
+pydantic>=1.10.8,<2.0.0
+six>=1.16.0
+future>=0.18.3
+futures>=3.0.5
+typing>=3.7.4.3
 jupyter>=1.0.0
 ipython>=8.0.0 
