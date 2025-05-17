@@ -7,6 +7,7 @@ from langchain_core.messages import HumanMessage, AIMessage
 from langchain_core.output_parsers import StrOutputParser
 from langchain_groq import ChatGroq
 from langgraph.graph import StateGraph, END
+from langgraph.persist import MemorySaver
 
 # Type definitions for our workflow
 class EmployeeInfo(TypedDict):
@@ -26,15 +27,23 @@ class WorkflowState(TypedDict):
     messages: List[Any]
     documents_ready: List[str]
     feedback: str
+    memory: Dict[str, Any]  # New field for persistent memory
 
 # Initialize LLM (using Groq, but this can be changed to any provider)
 # You'll need to set GROQ_API_KEY environment variable
 api_key = os.environ.get("GROQ_API_KEY", "")
 llm = ChatGroq(temperature=0, model_name="llama3-70b-8192", api_key=api_key)
 
+# Create storage for workflow persistence
+memory_saver = MemorySaver()
+
 # Node 1: Documentation Preparation Node
 def prepare_documents(state: WorkflowState) -> WorkflowState:
     """Generate a list of required documents based on employee information."""
+    # Initialize memory if not present
+    if "memory" not in state:
+        state["memory"] = {}
+    
     # Create a message to ask the LLM for required documents
     employee = state["employee"]
     prompt = f"""
@@ -80,6 +89,13 @@ def prepare_documents(state: WorkflowState) -> WorkflowState:
             "Department Specific Policies"
         ]
     
+    # Add to memory
+    state["memory"]["documents_generated_at"] = datetime.now().isoformat()
+    state["memory"]["document_requirements"] = {
+        "based_on_department": employee["department"],
+        "based_on_position": employee["position"]
+    }
+    
     # Update state with document list
     state["documents_ready"] = documents
     state["current_step"] = "documents_prepared"
@@ -97,6 +113,11 @@ def generate_welcome_message(state: WorkflowState) -> WorkflowState:
     employee = state["employee"]
     documents = state["documents_ready"]
     
+    # Access memory from previous step
+    document_requirements = state["memory"].get("document_requirements", {})
+    documents_generated_at = state["memory"].get("documents_generated_at", "unknown time")
+    
+    # Add context about document generation to the prompt
     prompt = f"""
     You are an HR assistant responsible for welcoming new employees.
     Craft a warm, professional welcome message for the following new employee:
@@ -105,6 +126,10 @@ def generate_welcome_message(state: WorkflowState) -> WorkflowState:
     Position: {employee['position']}
     Department: {employee['department']}
     Start Date: {employee['start_date']}
+    
+    The document requirements were prepared at {documents_generated_at} 
+    based on the employee's department ({document_requirements.get('based_on_department', 'unknown')})
+    and position ({document_requirements.get('based_on_position', 'unknown')}).
     
     Include:
     1. A warm welcome
@@ -119,7 +144,7 @@ def generate_welcome_message(state: WorkflowState) -> WorkflowState:
     # messages = [HumanMessage(content=prompt)]
     # welcome_message = llm.invoke(messages).content
     
-    # For demo purposes, we'll use a template message
+    # For demo purposes, we'll use a template message with memory context
     welcome_message = f"""
     Dear {employee['name']},
     
@@ -127,7 +152,7 @@ def generate_welcome_message(state: WorkflowState) -> WorkflowState:
     
     On your first day, please arrive at 9:00 AM at our main office where you'll be greeted by your manager. You'll receive a tour of the facilities, meet your team members, and get set up with all necessary equipment and access.
     
-    Please prepare the following documents in advance:
+    Based on your role in {employee['department']}, we've prepared the following documents for you:
     {', '.join(documents)}
     
     We're looking forward to your contributions and having you on board!
@@ -135,6 +160,10 @@ def generate_welcome_message(state: WorkflowState) -> WorkflowState:
     Best regards,
     HR Department
     """
+    
+    # Add to memory
+    state["memory"]["welcome_message_generated_at"] = datetime.now().isoformat()
+    state["memory"]["sentiment"] = "positive"
     
     # Update state with welcome message
     state["messages"].append({
@@ -151,6 +180,10 @@ def provision_equipment(state: WorkflowState) -> WorkflowState:
     """Generate equipment provisioning requests based on employee needs."""
     employee = state["employee"]
     
+    # Access memory from previous steps
+    welcome_message_time = state["memory"].get("welcome_message_generated_at", "unknown time")
+    document_requirements = state["memory"].get("document_requirements", {})
+    
     # Get the equipment needs from employee data
     equipment_needs = employee["equipment_needs"]
     
@@ -164,17 +197,28 @@ def provision_equipment(state: WorkflowState) -> WorkflowState:
             "item": item,
             "ticket_id": ticket_id,
             "status": "requested",
-            "estimated_delivery": "Before start date"
+            "estimated_delivery": "Before start date",
+            "priority": "High" if item in ["Laptop", "Phone"] else "Normal"
         })
     
-    # Create a summary message
+    # Create a summary message with context from memory
     summary = f"""
     Equipment provisioning for {employee['name']}:
     
-    {"".join([f"- {item['item']}: Ticket #{item['ticket_id']} ({item['status']})\n" for item in provisioning_details])}
+    {"".join([f"- {item['item']}: Ticket #{item['ticket_id']} ({item['status']}, Priority: {item['priority']})\n" for item in provisioning_details])}
     
     All equipment will be ready by {employee['start_date']}.
+    
+    Note: Welcome message was sent at {welcome_message_time}
+    Equipment requirements are based on the employee's role as {employee['position']} in {employee['department']}.
     """
+    
+    # Add to memory
+    state["memory"]["equipment_provisioned_at"] = datetime.now().isoformat()
+    state["memory"]["equipment_details"] = [
+        {"item": item["item"], "ticket_id": item["ticket_id"]} 
+        for item in provisioning_details
+    ]
     
     # Update state
     state["messages"].append({
@@ -186,7 +230,7 @@ def provision_equipment(state: WorkflowState) -> WorkflowState:
     
     return state
 
-# Define our workflow graph
+# Define our workflow graph with persistence
 def create_workflow_graph():
     # Initialize the graph
     workflow = StateGraph(WorkflowState)
@@ -204,27 +248,33 @@ def create_workflow_graph():
     # Set the entry point
     workflow.set_entry_point("document_preparation")
     
-    # Compile the graph
-    return workflow.compile()
+    # Configure persistence
+    persisted_workflow = workflow.compile(checkpointer=memory_saver)
+    
+    return persisted_workflow
 
 # Function to start a new onboarding workflow
 def start_onboarding_workflow(employee_data: Dict) -> Dict:
     """Start the onboarding workflow for a new employee."""
-    # Prepare the initial state
+    # Prepare the initial state with memory
     initial_state = WorkflowState(
         employee=employee_data,
         current_step="starting",
         completed_steps=[],
         messages=[],
         documents_ready=[],
-        feedback=""
+        feedback="",
+        memory={}  # Initialize empty memory
     )
     
     # Create the workflow
     workflow = create_workflow_graph()
     
-    # Run the workflow
-    for event, state in workflow.stream(initial_state):
+    # Generate a unique thread ID for this workflow
+    thread_id = f"thread_{employee_data['employee_id']}_{datetime.now().timestamp()}"
+    
+    # Run the workflow with persistence
+    for event, state in workflow.stream(initial_state, thread_id=thread_id):
         print(f"Step completed: {event}")
     
     # Return the final state
@@ -251,5 +301,10 @@ if __name__ == "__main__":
     print("\nWorkflow Messages:")
     for message in result["messages"]:
         print(f"\n[{message['role']}]: {message['content']}")
+    
+    # Print memory state
+    print("\nMemory State:")
+    for key, value in result["memory"].items():
+        print(f"{key}: {value}")
     
     print(f"\nWorkflow completed with steps: {result['completed_steps']}") 

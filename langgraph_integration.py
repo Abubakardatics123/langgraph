@@ -1,10 +1,21 @@
 import os
 import json
+import sys
 from typing import Dict, List, Optional
 from datetime import datetime
 
 # Import the LangGraph workflow
-from hr_langgraph import start_onboarding_workflow, EmployeeInfo
+# Ensure correct import path
+try:
+    from hr_langgraph import start_onboarding_workflow, EmployeeInfo
+except ImportError:
+    # Try adding current directory to path
+    sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+    try:
+        from hr_langgraph import start_onboarding_workflow, EmployeeInfo
+    except ImportError:
+        print("ERROR: Could not import hr_langgraph module. Make sure it exists in the same directory.")
+        raise
 
 # Function to convert Flask employee data to LangGraph format
 def convert_to_langgraph_format(employee_data: Dict) -> EmployeeInfo:
@@ -24,6 +35,10 @@ def convert_to_langgraph_format(employee_data: Dict) -> EmployeeInfo:
     if employee_data.get('equipment', {}).get('headset', False):
         equipment_needs.append("Headset")
     
+    # If no equipment was selected, add default laptop
+    if not equipment_needs:
+        equipment_needs = ["Laptop"]
+    
     system_access = []
     if employee_data.get('access', {}).get('email', False):
         system_access.append("Email")
@@ -36,8 +51,19 @@ def convert_to_langgraph_format(employee_data: Dict) -> EmployeeInfo:
     if employee_data.get('access', {}).get('drive', False):
         system_access.append("Google Drive")
     
+    # If no access was selected, add default email
+    if not system_access:
+        system_access = ["Email"]
+    
     # Format date
     start_date = employee_data.get('startDate', datetime.now().strftime("%Y-%m-%d"))
+    
+    # Generate an employee ID if not present
+    emp_id = employee_data.get('id', f"EMP{hash(employee_data.get('name', '')) % 10000}")
+    
+    print(f"Converting employee data for {employee_data.get('name', '')}")
+    print(f"Equipment needs: {equipment_needs}")
+    print(f"System access: {system_access}")
     
     # Create the employee info object
     return EmployeeInfo(
@@ -45,7 +71,7 @@ def convert_to_langgraph_format(employee_data: Dict) -> EmployeeInfo:
         position=employee_data.get('position', ''),
         department=employee_data.get('department', ''),
         start_date=start_date,
-        employee_id=employee_data.get('id', f"EMP{hash(employee_data.get('name', '')) % 10000}"),
+        employee_id=emp_id,
         equipment_needs=equipment_needs,
         system_access=system_access,
         status="pending"
@@ -57,22 +83,39 @@ def process_employee_with_langgraph(employee_data: Dict) -> Dict:
     Process an employee through the LangGraph workflow and return the result
     """
     try:
+        print(f"Starting LangGraph workflow processing for {employee_data.get('name', '')}")
+        
         # Convert to LangGraph format
         langgraph_employee = convert_to_langgraph_format(employee_data)
         
         # Run the workflow
+        print("Executing workflow...")
         result = start_onboarding_workflow(langgraph_employee)
+        print(f"Workflow execution completed for {langgraph_employee['name']}")
         
-        # Return a simplified result
+        # Extract memory for additional context
+        memory = result.get("memory", {})
+        timestamps = {
+            "documents_generated_at": memory.get("documents_generated_at", "unknown"),
+            "welcome_message_generated_at": memory.get("welcome_message_generated_at", "unknown"),
+            "equipment_provisioned_at": memory.get("equipment_provisioned_at", "unknown")
+        }
+        
+        # Return a simplified result with memory data
         return {
             "success": True,
             "employee_name": langgraph_employee["name"],
             "completed_steps": result["completed_steps"],
             "documents": result["documents_ready"],
             "messages": result["messages"],
-            "status": "processed"
+            "status": "processed",
+            "memory": memory,
+            "timestamps": timestamps
         }
     except Exception as e:
+        print(f"Error in process_employee_with_langgraph: {str(e)}")
+        import traceback
+        traceback.print_exc()
         return {
             "success": False,
             "error": str(e),
@@ -96,6 +139,7 @@ def save_workflow_results(result: Dict, employee_id: str) -> str:
     with open(filename, 'w') as f:
         json.dump(result, f, indent=2)
     
+    print(f"Saved workflow results to {filename}")
     return filename
 
 # Example usage
@@ -123,7 +167,9 @@ if __name__ == "__main__":
     }
     
     # Process the employee
+    print("Testing LangGraph workflow with sample data")
     result = process_employee_with_langgraph(sample_data)
     
     # Print the result
+    print("Workflow result:")
     print(json.dumps(result, indent=2)) 

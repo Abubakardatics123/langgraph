@@ -146,6 +146,24 @@
             </div>
         </div>
 
+        <!-- Workflow Memory -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card workflow-card">
+                    <div class="card-header bg-info text-white">
+                        <h3 class="card-title mb-0">
+                            <i class="fas fa-memory"></i> Workflow Memory
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="workflowMemory">
+                            <p class="text-center">Loading memory data...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Messages from Workflow -->
         <div class="row mt-4">
             <div class="col-12">
@@ -420,6 +438,109 @@
             documentsList.innerHTML = documentsHtml;
         }
 
+        // Display workflow memory
+        function displayWorkflowMemory(data) {
+            const memoryContainer = document.getElementById('workflowMemory');
+            
+            if (!data || !data.workflow_available || !data.workflow.memory) {
+                memoryContainer.innerHTML = `
+                    <div class="alert alert-warning">
+                        <p class="mb-0">No memory data available.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const memory = data.workflow.memory;
+            const timestamps = data.workflow.timestamps || {};
+            
+            // Create a timeline of events
+            const timelineHtml = `
+                <div class="mb-4">
+                    <h5><i class="fas fa-clock"></i> Workflow Timeline</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <i class="fas fa-file-lines text-primary me-2"></i> 
+                                Document Preparation
+                            </div>
+                            <span class="badge bg-primary">${formatTimestamp(timestamps.documents_generated_at)}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <i class="fas fa-envelope-open-text text-success me-2"></i>
+                                Welcome Message Generated
+                            </div>
+                            <span class="badge bg-success">${formatTimestamp(timestamps.welcome_message_generated_at)}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <i class="fas fa-laptop text-info me-2"></i>
+                                Equipment Provisioned
+                            </div>
+                            <span class="badge bg-info">${formatTimestamp(timestamps.equipment_provisioned_at)}</span>
+                        </li>
+                    </ul>
+                </div>
+            `;
+            
+            // Create document requirements section
+            const docRequirements = memory.document_requirements || {};
+            const docRequirementsHtml = `
+                <div class="mb-4">
+                    <h5><i class="fas fa-clipboard-list"></i> Document Requirements</h5>
+                    <div class="card">
+                        <div class="card-body">
+                            <p><strong>Based on Department:</strong> ${docRequirements.based_on_department || 'N/A'}</p>
+                            <p><strong>Based on Position:</strong> ${docRequirements.based_on_position || 'N/A'}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Create equipment details section
+            const equipmentDetails = memory.equipment_details || [];
+            let equipmentHtml = '';
+            if (equipmentDetails.length > 0) {
+                const equipmentListItems = equipmentDetails.map(item => 
+                    `<li class="list-group-item">
+                        <i class="fas fa-cube me-2"></i>
+                        ${item.item} (Ticket ID: ${item.ticket_id})
+                    </li>`
+                ).join('');
+                
+                equipmentHtml = `
+                    <div class="mb-4">
+                        <h5><i class="fas fa-boxes"></i> Equipment Details</h5>
+                        <ul class="list-group">
+                            ${equipmentListItems}
+                        </ul>
+                    </div>
+                `;
+            }
+            
+            // Create full memory section
+            memoryContainer.innerHTML = `
+                ${timelineHtml}
+                ${docRequirementsHtml}
+                ${equipmentHtml}
+            `;
+        }
+        
+        // Helper to format timestamp
+        function formatTimestamp(timestamp) {
+            if (!timestamp || timestamp === 'unknown') {
+                return 'N/A';
+            }
+            
+            try {
+                const date = new Date(timestamp);
+                return date.toLocaleString();
+            } catch (e) {
+                return timestamp;
+            }
+        }
+
         // Initialize page
         async function initPage() {
             await checkAuth();
@@ -430,6 +551,7 @@
             displayWorkflowSteps(workflowData);
             displayWorkflowMessages(workflowData);
             displayDocumentList(workflowData);
+            displayWorkflowMemory(workflowData);
         }
 
         // Run initialization

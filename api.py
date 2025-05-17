@@ -37,12 +37,28 @@ try:
     
     # Try to import LangGraph modules
     try:
+        # Make sure import paths are correct
+        from hr_langgraph import start_onboarding_workflow, EmployeeInfo
         from langgraph_integration import process_employee_with_langgraph, save_workflow_results
         print("Imported LangGraph integration successfully")
         HAS_LANGGRAPH = True
     except ImportError as e:
-        print(f"LangGraph integration not available: {e}")
-        HAS_LANGGRAPH = False
+        print(f"LangGraph integration not available due to import error: {e}")
+        print("Trying relative import...")
+        try:
+            # Try with relative import
+            sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+            from .hr_langgraph import start_onboarding_workflow, EmployeeInfo
+            from .langgraph_integration import process_employee_with_langgraph, save_workflow_results
+            print("Imported LangGraph integration with relative import")
+            HAS_LANGGRAPH = True
+        except ImportError as e2:
+            print(f"Relative import also failed: {e2}")
+            HAS_LANGGRAPH = False
+        except Exception as e3:
+            print(f"Other error during LangGraph import: {e3}")
+            traceback.print_exc()
+            HAS_LANGGRAPH = False
 except ImportError as e:
     print(f"ERROR: Required module not found: {e}")
     print("Error: Required packages not found. Please install the requirements:")
@@ -197,7 +213,7 @@ def start_onboarding():
                 return jsonify({"error": f"Missing required field: {field}"}), 400
         
         # First create basic employee data
-        print(f"Creating basic employee data for {data['name']} (without workflow)")
+        print(f"Creating basic employee data for {data['name']}")
         employee = data_store.add_employee({
             "name": data["name"],
             "position": data["position"],
@@ -214,34 +230,51 @@ def start_onboarding():
         
         # Check if LangGraph is available
         if HAS_LANGGRAPH:
-            # Process the employee with LangGraph workflow
-            print(f"Processing employee {data['name']} with LangGraph workflow")
-            workflow_result = process_employee_with_langgraph(data)
-            
-            # Save workflow results
-            if workflow_result["success"]:
-                results_file = save_workflow_results(workflow_result, employee["id"])
-                print(f"Workflow results saved to {results_file}")
+            try:
+                # Process the employee with LangGraph workflow
+                print(f"Processing employee {data['name']} with LangGraph workflow")
                 
-                # Update employee record with workflow info
-                data_store.update_employee(employee["id"], {
-                    "status": "onboarding",
-                    "documents": workflow_result.get("documents", []),
-                    "workflow_status": "processed",
-                    "workflow_completed_steps": workflow_result.get("completed_steps", [])
-                })
+                # Ensure equipment and access data are present
+                if "equipment" not in data:
+                    data["equipment"] = {"laptop": True, "monitor": True, "keyboard": True}
+                if "access" not in data:
+                    data["access"] = {"email": True, "github": True, "slack": True}
                 
-                # Add workflow information to result
+                # Process the employee
+                workflow_result = process_employee_with_langgraph(data)
+                
+                # Save workflow results
+                if workflow_result["success"]:
+                    print(f"Workflow successful for {data['name']}")
+                    results_file = save_workflow_results(workflow_result, employee["id"])
+                    print(f"Workflow results saved to {results_file}")
+                    
+                    # Update employee record with workflow info
+                    data_store.update_employee(employee["id"], {
+                        "status": "onboarding",
+                        "documents": workflow_result.get("documents", []),
+                        "workflow_status": "processed",
+                        "workflow_completed_steps": workflow_result.get("completed_steps", [])
+                    })
+                    
+                    # Add workflow information to result
+                    result["workflow"] = {
+                        "status": "success",
+                        "steps_completed": len(workflow_result.get("completed_steps", [])),
+                        "documents_prepared": len(workflow_result.get("documents", [])),
+                    }
+                else:
+                    print(f"LangGraph workflow failed for {data['name']}: {workflow_result.get('error', 'Unknown error')}")
+                    result["workflow"] = {
+                        "status": "failed",
+                        "error": workflow_result.get("error", "Unknown error")
+                    }
+            except Exception as workflow_error:
+                print(f"Error executing LangGraph workflow: {str(workflow_error)}")
+                traceback.print_exc()
                 result["workflow"] = {
-                    "status": "success",
-                    "steps_completed": len(workflow_result.get("completed_steps", [])),
-                    "documents_prepared": len(workflow_result.get("documents", [])),
-                }
-            else:
-                print(f"LangGraph workflow failed for {data['name']}: {workflow_result.get('error', 'Unknown error')}")
-                result["workflow"] = {
-                    "status": "failed",
-                    "error": workflow_result.get("error", "Unknown error")
+                    "status": "error",
+                    "message": f"Error executing workflow: {str(workflow_error)}"
                 }
         else:
             # Use simple process without LangGraph
