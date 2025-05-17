@@ -20,4 +20,4 @@ if __name__ == "__main__":
         print("="*50)
     except Exception as e:
         print(f"\nError running workflow: {e}")
-        print("Make sure you've set your OpenAI API key in the hr_onboarding_workflow.py file.") 
+        print("Make sure you've set your Groq API key in the hr_onboarding_workflow.py file.") 

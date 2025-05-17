@@ -11,13 +11,13 @@ from pydantic import BaseModel
 
 # LangGraph and LangChain imports
 from langgraph.graph import StateGraph, END
-from langchain_openai import ChatOpenAI
+from langchain_groq import ChatGroq
 from langchain.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
 from langchain_core.messages import HumanMessage, AIMessage
 
-# Set OpenAI API key (replace with your key)
-os.environ["OPENAI_API_KEY"] = "your-api-key-here"
+# Set Groq API key
+os.environ["GROQ_API_KEY"] = "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"
 
 #############################################
 # Define State and Memory
@@ -46,7 +46,7 @@ class State(TypedDict):
 #############################################
 
 # Initialize LLM
-llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+llm = ChatGroq(model="llama3-70b-8192", temperature=0)
 
 # Node 1: Collect and validate employee information
 def collect_employee_info(state: State) -> State:
