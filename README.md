@@ -11,29 +11,36 @@ This project demonstrates a simple LangGraph-based workflow for HR employee onbo
 
 ## Requirements
 
-- Python 3.8+
+- Python 3.8+ (this code does NOT work with Python 2.x)
 - Required packages:
   - langgraph
   - langchain
-  - langchain_openai
+  - langchain_groq
   - langchain_community
   - pydantic
 
 ## Getting Started
 
-1. Install the required packages:
+1. Make sure you have Python 3 installed and properly configured:
    ```
-   pip install -r requirements.txt
-   ```
-
-2. Add your OpenAI API key in the `hr_onboarding_workflow.py` file
-   ```python
-   os.environ["OPENAI_API_KEY"] = "your-api-key-here"
+   python3 --version
    ```
 
-3. Run the workflow:
+2. Install the required packages:
    ```
-   python run_workflow.py
+   pip3 install -r requirements.txt
+   ```
+
+3. Run the workflow using one of these methods:
+   ```
+   # Method 1: Using the shell script (recommended)
+   ./run.sh
+   
+   # Method 2: Using Python 3 explicitly
+   python3 run_workflow.py
+   
+   # Method 3: Execute the main script directly (requires proper execution permissions)
+   ./hr_onboarding_workflow.py
    ```
 
 ## Workflow Architecture
@@ -50,6 +57,7 @@ Memory is maintained throughout the workflow, allowing each node to access infor
 
 - `hr_onboarding_workflow.py` - Core implementation of the LangGraph workflow
 - `run_workflow.py` - Simple script to execute the workflow
+- `run.sh` - Shell script to ensure the workflow runs with Python 3
 - `requirements.txt` - Required Python packages
 
 ## Extending the Workflow
@@ -58,4 +66,9 @@ This simple workflow can be extended with:
 - Additional decision nodes
 - Integration with HR systems
 - Automated email notifications
-- Document generation capabilities 
+- Document generation capabilities
+
+## Troubleshooting
+
+- If you encounter a SyntaxError, make sure you're using Python 3, not Python 2.7
+- The code uses type annotations which are not supported in Python 2.x 
