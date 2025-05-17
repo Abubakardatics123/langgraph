@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 """
 HR Onboarding Workflow using LangGraph
 
@@ -24,14 +24,17 @@ except ImportError:
     Annotated = None
     Literal = None
 
-try:
-    from pydantic import BaseModel
-except ImportError:
-    # Simple fallback for Python 2
-    class BaseModel(object):
-        def __init__(self, **kwargs):
-            for key, value in kwargs.items():
-                setattr(self, key, value)
+# Create a simple BaseModel alternative for Python 2
+class BaseModel(object):
+    def __init__(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+            
+    def __getattr__(self, name):
+        # This helps prevent "object has no attribute" errors
+        if name not in self.__dict__:
+            return None
+        return self.__dict__[name]
 
 # LangGraph and LangChain imports
 try:
@@ -42,7 +45,7 @@ try:
     from langchain_core.messages import HumanMessage, AIMessage
 except ImportError:
     print("Error: Required packages not found. Please install the requirements:")
-    print("pip3 install -r requirements.txt")
+    print("pip install -r requirements.txt")
     sys.exit(1)
 
 # Set Groq API key
@@ -53,7 +56,7 @@ os.environ["GROQ_API_KEY"] = "gsk_yqAvxpVItmrkapKWC1z5WGdyb3FYoCitvh9YUy7dpW8cJ6
 #############################################
 
 # Define the state schema - Python 2 compatible version
-class EmployeeInfo(BaseModel):
+class EmployeeInfo(object):
     def __init__(self, name, position, department, start_date, 
                  equipment_needs=None, system_access=None, 
                  training_requirements=None, onboarding_status="pending"):
@@ -111,7 +114,7 @@ def collect_employee_info(state):
     
     # Add a note to HR notes
     hr_notes = state.get("hr_notes", [])
-    hr_notes.append(f"Employee information validated for {employee.name}")
+    hr_notes.append("Employee information validated for {}".format(employee.name))
     
     # Return updated state
     new_state = state.copy()
@@ -149,7 +152,11 @@ def determine_equipment_access(state):
     
     # Get response from LLM and parse
     chain = prompt | llm | parser
-    response = chain.invoke({"name": employee.name, "position": employee.position, "department": employee.department})
+    response = chain.invoke({
+        "name": employee.name, 
+        "position": employee.position, 
+        "department": employee.department
+    })
     
     # Update employee information
     employee.equipment_needs = response.get("equipment_needs", [])
@@ -161,7 +168,7 @@ def determine_equipment_access(state):
     
     # Add notes
     it_notes = state.get("it_notes", [])
-    it_notes.append(f"Equipment and access determined for {employee.name}")
+    it_notes.append("Equipment and access determined for {}".format(employee.name))
     
     # Return updated state with memory
     new_state = state.copy()
@@ -178,7 +185,7 @@ def create_training_plan(state):
     messages = state.get("messages", [])
     
     # Use message history for context
-    conversation_history = "\n".join([f"{msg['role']}: {msg['content']}" for msg in messages[-4:]])
+    conversation_history = "\n".join(["{}:{}".format(msg['role'], msg['content']) for msg in messages[-4:]])
     
     # Create a prompt for the LLM
     prompt = ChatPromptTemplate.from_messages([
@@ -229,7 +236,7 @@ def create_training_plan(state):
     
     # Add notes
     hr_notes = state.get("hr_notes", [])
-    hr_notes.append(f"Training plan created for {employee.name}")
+    hr_notes.append("Training plan created for {}".format(employee.name))
     
     # Return updated state
     new_state = state.copy()
@@ -292,31 +299,31 @@ def run_workflow():
     
     # Print the results
     print("ONBOARDING WORKFLOW RESULTS\n")
-    print(f"Employee: {result['employee'].name}")
-    print(f"Position: {result['employee'].position}")
-    print(f"Department: {result['employee'].department}")
-    print(f"Start Date: {result['employee'].start_date}")
+    print("Employee: {}".format(result['employee'].name))
+    print("Position: {}".format(result['employee'].position))
+    print("Department: {}".format(result['employee'].department))
+    print("Start Date: {}".format(result['employee'].start_date))
     print("\nEquipment Needs:")
     for item in result['employee'].equipment_needs:
-        print(f"- {item}")
+        print("- {}".format(item))
     print("\nSystem Access:")
     for item in result['employee'].system_access:
-        print(f"- {item}")
+        print("- {}".format(item))
     print("\nTraining Requirements:")
     for item in result['employee'].training_requirements:
-        print(f"- {item}")
-    print("\nStatus:", result['employee'].onboarding_status)
+        print("- {}".format(item))
+    print("\nStatus: {}".format(result['employee'].onboarding_status))
     
     print("\nHR Notes:")
     for note in result['hr_notes']:
-        print(f"- {note}")
+        print("- {}".format(note))
     print("\nIT Notes:")
     for note in result['it_notes']:
-        print(f"- {note}")
+        print("- {}".format(note))
     
     # Display memory information
     print("\nMEMORY USAGE:")
-    print(f"Total messages stored: {len(result['messages'])}")
+    print("Total messages stored: {}".format(len(result['messages'])))
     print("Memory provides context across nodes, allowing the workflow to reference previous steps.")
     
     return result
@@ -326,4 +333,10 @@ def run_workflow():
 #############################################
 
 if __name__ == "__main__":
-    result = run_workflow() 
+    try:
+        result = run_workflow()
+    except Exception as e:
+        print("Error running workflow: {}".format(e))
+        import traceback
+        traceback.print_exc()
+        sys.exit(1) 
