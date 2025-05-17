@@ -8,6 +8,8 @@ six
 typing
 jupyter
 ipython
-flask
-flask-cors
-flask-session 
+flask==3.1.1
+flask-cors==6.0.0
+flask-session
+streamlit==1.40.0
+requests==2.32.3 
