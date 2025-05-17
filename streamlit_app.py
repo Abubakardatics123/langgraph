@@ -3,6 +3,14 @@ import requests
 import json
 import os
 from datetime import datetime
+import time
+
+# Try to import the data_access module (for standalone mode)
+try:
+    import data_access
+    HAS_DATA_ACCESS = True
+except ImportError:
+    HAS_DATA_ACCESS = False
 
 # Configure the app
 st.set_page_config(
@@ -12,11 +20,22 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Define API endpoints (will be updated when deployed)
+# Define API endpoints and check connectivity
 API_URL = os.environ.get('API_URL', 'http://localhost:5000/api')
 EMPLOYEES_API = f"{API_URL}/admin/employees"
 AUTH_CHECK_API = f"{API_URL}/admin/check-auth"
 LOGIN_API = f"{API_URL}/admin/login"
+
+# Check if API is available
+API_AVAILABLE = False
+if not os.environ.get('STREAMLIT_STANDALONE', False):
+    try:
+        # Try to connect to the health endpoint
+        health_response = requests.get(f"{API_URL}/health", timeout=3)
+        API_AVAILABLE = health_response.status_code == 200
+    except:
+        st.warning("API server is not available. Using standalone mode with local data.")
+        API_AVAILABLE = False
 
 # App state
 if 'authenticated' not in st.session_state:
@@ -25,9 +44,20 @@ if 'employees' not in st.session_state:
     st.session_state.employees = []
 if 'active_tab' not in st.session_state:
     st.session_state.active_tab = "Dashboard"
+if 'api_available' not in st.session_state:
+    st.session_state.api_available = API_AVAILABLE
 
 # Functions
 def login(username, password):
+    # In standalone mode or when API is not available, use hardcoded credentials
+    if not st.session_state.api_available:
+        if username == "admin" and password == "password123":  # Hardcoded for demo
+            st.session_state.authenticated = True
+            return True
+        else:
+            return False
+    
+    # Otherwise use the API
     try:
         response = requests.post(
             LOGIN_API,
@@ -41,10 +71,27 @@ def login(username, password):
         else:
             return False
     except Exception as e:
-        st.error(f"Login error: {str(e)}")
-        return False
+        # If API fails, fall back to hardcoded credentials
+        st.warning("Login API not available. Using local authentication.")
+        if username == "admin" and password == "password123":  # Hardcoded for demo
+            st.session_state.authenticated = True
+            return True
+        else:
+            st.error(f"Login error: {str(e)}")
+            return False
 
 def fetch_employees():
+    # If API is not available and data_access is available, use local data
+    if not st.session_state.api_available and HAS_DATA_ACCESS:
+        try:
+            employees = data_access.load_employees()
+            st.session_state.employees = employees
+            return employees
+        except Exception as e:
+            st.error(f"Error loading local employee data: {str(e)}")
+            return []
+    
+    # Otherwise try to use the API
     try:
         response = requests.get(EMPLOYEES_API)
         if response.status_code == 200:
@@ -54,8 +101,19 @@ def fetch_employees():
                 return data['employees']
         return []
     except Exception as e:
-        st.error(f"Error fetching employees: {str(e)}")
-        return []
+        # If API request fails and data_access is available, try local data as fallback
+        if HAS_DATA_ACCESS:
+            try:
+                st.warning("Falling back to local data.")
+                employees = data_access.load_employees()
+                st.session_state.employees = employees
+                return employees
+            except Exception as inner_e:
+                st.error(f"Error loading local employee data: {str(inner_e)}")
+                return []
+        else:
+            st.error(f"Error fetching employees: {str(e)}")
+            return []
 
 def format_date(date_str):
     if not date_str:
@@ -84,14 +142,16 @@ def get_status_color(status):
 def show_login():
     st.title("HR Workflow Admin Login")
     
+    if not st.session_state.api_available:
+        st.info("Running in standalone mode with local authentication.")
+    
     with st.form("login_form"):
         username = st.text_input("Username")
         password = st.text_input("Password", type="password")
         submit = st.form_submit_button("Login")
         
         if submit:
-            if username == "admin" and password == "password123":  # Hardcoded for demo
-                st.session_state.authenticated = True
+            if login(username, password):
                 st.success("Login successful!")
                 st.rerun()
             else:
@@ -221,22 +281,94 @@ def show_add_employee():
         
         start_date = st.date_input("Start Date")
         
+        # Default equipment needs based on department
+        equipment_col, access_col = st.columns(2)
+        
+        with equipment_col:
+            st.write("**Equipment Needs**")
+            laptop = st.checkbox("Laptop", value=True)
+            monitor = st.checkbox("Monitor")
+            phone = st.checkbox("Phone")
+            headset = st.checkbox("Headset")
+            
+        with access_col:
+            st.write("**System Access**")
+            email = st.checkbox("Email", value=True)
+            crm = st.checkbox("CRM")
+            github = st.checkbox("GitHub")
+            jira = st.checkbox("Jira")
+        
         submitted = st.form_submit_button("Add Employee")
         
         if submitted:
             if not name or not position or not department or not start_date:
                 st.error("Please fill out all required fields")
             else:
-                st.success(f"Employee {name} added successfully!")
-                # In a real app, this would call the API to add the employee
-                st.session_state.active_tab = "Employees"
-                st.rerun()
+                # Create employee data
+                employee_data = {
+                    "name": name,
+                    "position": position,
+                    "department": department,
+                    "startDate": start_date.strftime("%Y-%m-%d"),
+                    "status": "New",
+                    "equipmentNeeds": [],
+                    "systemAccess": []
+                }
+                
+                # Add equipment needs
+                if laptop: employee_data["equipmentNeeds"].append("Laptop")
+                if monitor: employee_data["equipmentNeeds"].append("Monitor")
+                if phone: employee_data["equipmentNeeds"].append("Phone")
+                if headset: employee_data["equipmentNeeds"].append("Headset")
+                
+                # Add system access
+                if email: employee_data["systemAccess"].append("Email")
+                if crm: employee_data["systemAccess"].append("CRM")
+                if github: employee_data["systemAccess"].append("GitHub")
+                if jira: employee_data["systemAccess"].append("Jira")
+                
+                success = False
+                
+                # Try to add via API if available
+                if st.session_state.api_available:
+                    try:
+                        response = requests.post(
+                            f"{API_URL}/start-onboarding",
+                            json=employee_data,
+                            headers={"Content-Type": "application/json"}
+                        )
+                        if response.status_code == 200:
+                            success = True
+                    except Exception as e:
+                        st.error(f"Error adding employee via API: {str(e)}")
+                        # Will try fallback below
+                
+                # If API failed or not available, try using local data access
+                if not success and HAS_DATA_ACCESS:
+                    try:
+                        data_access.add_employee(employee_data)
+                        success = True
+                    except Exception as e:
+                        st.error(f"Error adding employee locally: {str(e)}")
+                
+                if success:
+                    st.success(f"Employee {name} added successfully!")
+                    # Update the employees list
+                    fetch_employees()
+                    st.session_state.active_tab = "Employees"
+                    st.rerun()
 
 # Main app
 def main():
     # Sidebar
     with st.sidebar:
         st.title("HR Workflow")
+        
+        # Show API status
+        if st.session_state.api_available:
+            st.success("API Connected")
+        else:
+            st.warning("Standalone Mode (API Unavailable)")
         
         if st.session_state.authenticated:
             st.write(f"Welcome, Admin!")
