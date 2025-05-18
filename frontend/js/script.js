@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const errorRetryBtn = document.getElementById('error-retry-btn');
     const progressBar = document.getElementById('progress-bar');
     
-    // API endpoint
-    const apiBaseUrl = 'http://localhost:5000';
+    // API endpoint - Updated to use port 3000
+    const apiBaseUrl = 'http://localhost:3000';
     const apiEndpoint = apiBaseUrl + '/api/start-onboarding';
     
     // Check API health on page load

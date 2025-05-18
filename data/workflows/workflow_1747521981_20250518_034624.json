@@ -1,0 +1,50 @@
+{
+  "success": true,
+  "employee_name": "Robert Wilson",
+  "completed_steps": [
+    "employee_info",
+    "equipment_access",
+    "training_plan"
+  ],
+  "documents": [
+    "Welcome Letter",
+    "Equipment Request Form",
+    "Access Request Form",
+    "Training Plan"
+  ],
+  "equipmentNeeds": [
+    "Laptop (MacBook Pro or equivalent)",
+    "24-inch 4K Monitor",
+    "Graphics Tablet (Wacom or equivalent)",
+    "Noise-cancelling headphones",
+    "Ergonomic keyboard and mouse"
+  ],
+  "systemAccess": [
+    "Adobe Creative Cloud (Photoshop, Illustrator, InDesign, etc.)",
+    "Sketch or Figma design tool",
+    "Jira or Asana project management tool",
+    "Company intranet and shared drives",
+    "Design team collaboration tools (e.g. Slack, Microsoft Teams)"
+  ],
+  "trainingRequirements": [
+    "UX Design principles and best practices",
+    "Adobe Creative Cloud (Photoshop, Illustrator, InDesign, etc.)",
+    "Sketch or Figma design tool",
+    "Jira or Asana project management tool",
+    "Company intranet and shared drives",
+    "Design team collaboration tools (e.g. Slack, Microsoft Teams)",
+    "Graphics Tablet (Wacom or equivalent) usage",
+    "Ergonomic keyboard and mouse usage",
+    "Noise-cancelling headphones usage",
+    "24-inch 4K Monitor usage",
+    "Laptop (MacBook Pro or equivalent) usage"
+  ],
+  "status": "processed",
+  "hrNotes": [
+    "Employee information validated for Robert Wilson",
+    "Training plan created for Robert Wilson"
+  ],
+  "itNotes": [
+    "Equipment and access determined for Robert Wilson"
+  ]
+}

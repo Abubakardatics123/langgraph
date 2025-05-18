@@ -169,12 +169,15 @@ def determine_equipment_access(state):
         # Create a prompt for the LLM
         prompt = ChatPromptTemplate.from_messages([
             ("system", "You are an IT specialist helping with employee onboarding. "
-                      "Determine appropriate equipment and system access based on the role."),
+                      "Determine appropriate equipment and system access based on the role. "
+                      "Your response MUST be valid JSON with double quotes, containing ONLY 'equipment_needs' and 'system_access' lists "
+                      "with no additional text before or after the JSON."),
             ("user", "Based on the following employee information, list required equipment and system access:\n"
                     "Employee Name: {name}\n"
                     "Position: {position}\n"
                     "Department: {department}\n"
-                    "Respond in JSON format with 'equipment_needs' and 'system_access' as lists.")
+                    "Respond with ONLY a JSON object with 'equipment_needs' and 'system_access' as lists. "
+                    "Do not include any explanations or text outside the JSON.")
         ])
         
         # Format the prompt with employee info
@@ -187,13 +190,57 @@ def determine_equipment_access(state):
         # Define output parser for structured response
         parser = JsonOutputParser()
         
-        # Get response from LLM and parse
-        chain = prompt | llm | parser
-        response = chain.invoke({
-            "name": employee.name, 
-            "position": employee.position, 
-            "department": employee.department
-        })
+        # Initialize response with default values in case of failure
+        response = {
+            "equipment_needs": ["Laptop", "Monitor", "Keyboard", "Mouse"],
+            "system_access": ["Email", "Company Intranet", "Department Shared Drive"]
+        }
+        
+        # Try to get response from LLM and parse
+        try:
+            # Get response from LLM and parse
+            chain = prompt | llm | parser
+            llm_response = chain.invoke({
+                "name": employee.name, 
+                "position": employee.position, 
+                "department": employee.department
+            })
+            
+            # Only update response if we got a valid result
+            if llm_response is not None:
+                response = llm_response
+            
+        except Exception as json_error:
+            # Fallback if JSON parsing fails
+            print(f"JSON parsing failed: {json_error}")
+            print("Using fallback approach to extract equipment and access requirements")
+            
+            # Get raw response from LLM
+            message = HumanMessage(content=str(formatted_prompt))
+            llm_response = llm.invoke([message])
+            content = llm_response.content
+            
+            # Try to extract JSON manually
+            import re
+            import json
+            
+            # Try to find JSON block
+            json_match = re.search(r'\{[\s\S]*\}', content)
+            if json_match:
+                json_str = json_match.group(0)
+                # Replace single quotes with double quotes
+                json_str = json_str.replace("'", '"')
+                
+                try:
+                    extracted_response = json.loads(json_str)
+                    print("Successfully extracted JSON using regex")
+                    if extracted_response is not None:
+                        response = extracted_response
+                except json.JSONDecodeError as e:
+                    print(f"Failed to parse extracted JSON: {e}")
+                    print("Using default equipment and access values")
+            else:
+                print("No JSON found in response, using default values")
         
         # Update employee information
         employee.equipment_needs = response.get("equipment_needs", [])
@@ -239,7 +286,9 @@ def create_training_plan(state):
         # Create a prompt for the LLM
         prompt = ChatPromptTemplate.from_messages([
             ("system", "You are a training coordinator helping with employee onboarding. "
-                      "Create a training plan for the new employee."),
+                      "Create a training plan for the new employee. "
+                      "Your response MUST be valid JSON with double quotes, containing ONLY a 'training_requirements' list "
+                      "with no additional text before or after the JSON."),
             ("user", "Based on the following employee information and previous onboarding steps, "
                     "determine appropriate training requirements:\n"
                     "Employee Name: {name}\n"
@@ -248,7 +297,8 @@ def create_training_plan(state):
                     "Equipment: {equipment}\n"
                     "System Access: {access}\n\n"
                     "Context from previous steps:\n{context}\n\n"
-                    "Respond in JSON format with 'training_requirements' as a list.")
+                    "Return ONLY a JSON object with only a 'training_requirements' key containing an array of strings. "
+                    "Do not include any explanations or text outside the JSON.")
         ])
         
         # Format the prompt with employee info and context
@@ -264,19 +314,77 @@ def create_training_plan(state):
         # Define output parser
         parser = JsonOutputParser()
         
-        # Get response from LLM and parse
-        chain = prompt | llm | parser
-        response = chain.invoke({
-            "name": employee.name, 
-            "position": employee.position, 
-            "department": employee.department,
-            "equipment": employee.equipment_needs,
-            "access": employee.system_access,
-            "context": conversation_history
-        })
+        # Initialize response with default values in case of failure
+        response = {
+            "training_requirements": [
+                "Company Orientation",
+                "Department Introduction",
+                "System Training",
+                "Role-specific Training",
+                "Equipment Training"
+            ]
+        }
+        
+        # Try to get response from LLM and parse
+        try:
+            # Get response from LLM and parse
+            chain = prompt | llm | parser
+            llm_response = chain.invoke({
+                "name": employee.name, 
+                "position": employee.position, 
+                "department": employee.department,
+                "equipment": employee.equipment_needs,
+                "access": employee.system_access,
+                "context": conversation_history
+            })
+            
+            # Only update response if we got a valid result
+            if llm_response is not None:
+                response = llm_response
+            
+        except Exception as json_error:
+            # Fallback if JSON parsing fails
+            print(f"JSON parsing failed: {json_error}")
+            print("Using fallback approach to extract training requirements")
+            
+            # Get raw response from LLM
+            message = HumanMessage(content=str(formatted_prompt))
+            llm_response = llm.invoke([message])
+            content = llm_response.content
+            
+            # Try to extract JSON manually
+            import re
+            import json
+            
+            # Try to find JSON block
+            json_match = re.search(r'\{[\s\S]*\}', content)
+            if json_match:
+                json_str = json_match.group(0)
+                # Replace single quotes with double quotes
+                json_str = json_str.replace("'", '"')
+                
+                try:
+                    extracted_response = json.loads(json_str)
+                    print("Successfully extracted JSON using regex")
+                    if extracted_response is not None:
+                        response = extracted_response
+                except json.JSONDecodeError as e:
+                    print(f"Failed to parse extracted JSON: {e}")
+                    print("Using default training requirements")
+            else:
+                print("No JSON found in response, using default training requirements")
         
         # Update employee information
         employee.training_requirements = response.get("training_requirements", [])
+        if not employee.training_requirements:
+            # Fallback if somehow we're still empty
+            employee.training_requirements = [
+                "Company Orientation",
+                "Department Introduction",
+                "System Training"
+            ]
+        
+        # Mark onboarding as completed
         employee.onboarding_status = "completed"
         
         # Store the interaction in memory
@@ -287,7 +395,7 @@ def create_training_plan(state):
         hr_notes = state.get("hr_notes", [])
         hr_notes.append("Training plan created for {}".format(employee.name))
         
-        # Return updated state
+        # Return updated state with memory
         new_state = copy.deepcopy(state)
         new_state["employee"] = employee
         new_state["hr_notes"] = hr_notes

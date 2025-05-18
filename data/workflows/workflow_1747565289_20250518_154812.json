@@ -1,0 +1,49 @@
+{
+  "success": true,
+  "employee": {
+    "name": "Moosa",
+    "position": "HR",
+    "department": "Marketing",
+    "startDate": "2025-06-05",
+    "equipmentNeeds": [
+      "Laptop",
+      "Monitor",
+      "Keyboard",
+      "Mouse"
+    ],
+    "systemAccess": [
+      "HR System",
+      "Employee Database",
+      "Microsoft Office Suite",
+      "Company Intranet"
+    ],
+    "trainingRequirements": [
+      "HR System Training",
+      "Employee Database Training",
+      "Microsoft Office Suite Training",
+      "Company Intranet Training",
+      "HR Process and Policy Training",
+      "Employee Data Management Training",
+      "Marketing Department Overview Training"
+    ],
+    "status": "completed"
+  },
+  "hrNotes": [
+    "Employee information validated for Moosa",
+    "Training plan created for Moosa"
+  ],
+  "itNotes": [
+    "Equipment and access determined for Moosa"
+  ],
+  "completed_steps": [
+    "employee_info",
+    "equipment_access",
+    "training_plan"
+  ],
+  "documents": [
+    "Welcome Letter",
+    "Equipment Request Form",
+    "Access Request Form",
+    "Training Plan"
+  ]
+}

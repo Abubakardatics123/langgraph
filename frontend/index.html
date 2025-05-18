@@ -3,134 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HR Workflow System</title>
+    <title>HR Workflow | Home</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/admin-styles.css">
     <style>
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: #4e73df;
+        .card {
+            margin-bottom: 20px;
+            transition: transform 0.3s;
         }
-        .card-hover:hover {
+        .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-            transition: all 0.3s;
-        }
-        .hero-section {
-            background-color: #f8f9fc;
-            padding: 5rem 0;
-            margin-bottom: 3rem;
-            border-radius: 0.5rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header class="d-flex justify-content-between align-items-center py-4">
-            <h1 class="h3">HR Workflow System</h1>
-            <div>
-                <a href="/login" class="btn btn-outline-primary me-2">
-                    <i class="fas fa-user-shield me-2"></i>Admin Login
-                </a>
+    <div class="container mt-5">
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-8 text-center">
+                <h1 class="display-4 fw-bold">HR Workflow System</h1>
+                <p class="lead">Welcome to the HR Workflow Management System</p>
             </div>
-        </header>
-
-        <section class="hero-section text-center">
-            <div class="container">
-                <h1 class="display-4 mb-4">Streamline Your HR Onboarding Process</h1>
-                <p class="lead mb-5">A powerful and intuitive workflow system for HR professionals</p>
-                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                    <a href="/onboarding" class="btn btn-primary btn-lg px-4 gap-3">
-                        <i class="fas fa-user-plus me-2"></i>Start Onboarding
-                    </a>
-                    <a href="/admin" class="btn btn-outline-secondary btn-lg px-4">
-                        <i class="fas fa-cog me-2"></i>Admin Dashboard
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <section class="features py-5">
-            <h2 class="text-center mb-5">Key Features</h2>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm card-hover">
-                        <div class="card-body text-center p-4">
-                            <div class="feature-icon">
-                                <i class="fas fa-rocket"></i>
-                            </div>
-                            <h3 class="h4 card-title">Automated Onboarding</h3>
-                            <p class="card-text">Streamline the employee onboarding process with AI-powered workflow automation.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm card-hover">
-                        <div class="card-body text-center p-4">
-                            <div class="feature-icon">
-                                <i class="fas fa-laptop"></i>
-                            </div>
-                            <h3 class="h4 card-title">Equipment Planning</h3>
-                            <p class="card-text">Automatically determine and provision equipment needs based on role.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm card-hover">
-                        <div class="card-body text-center p-4">
-                            <div class="feature-icon">
-                                <i class="fas fa-graduation-cap"></i>
-                            </div>
-                            <h3 class="h4 card-title">Training Plans</h3>
-                            <p class="card-text">Generate personalized training plans for new employees.</p>
-                        </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card h-100 shadow">
+                    <div class="card-body text-center">
+                        <i class="fas fa-users fa-3x text-primary mb-3"></i>
+                        <h3 class="card-title">Employees</h3>
+                        <p class="card-text">View and manage all employees in the system</p>
+                        <a href="/admin/employees.html" class="btn btn-primary">Go to Employees</a>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <section class="how-it-works py-5">
-            <h2 class="text-center mb-5">How It Works</h2>
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <h3 class="mb-4">Simple 3-Step Process</h3>
-                    <ol class="list-group list-group-numbered mb-4">
-                        <li class="list-group-item d-flex justify-content-between align-items-start">
-                            <div class="ms-2 me-auto">
-                                <div class="fw-bold">Enter Employee Information</div>
-                                Provide basic details about the new hire
-                            </div>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-start">
-                            <div class="ms-2 me-auto">
-                                <div class="fw-bold">Process Workflow</div>
-                                Our AI system determines equipment, access, and training needs
-                            </div>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-start">
-                            <div class="ms-2 me-auto">
-                                <div class="fw-bold">Complete Onboarding</div>
-                                Review the generated plan and implement
-                            </div>
-                        </li>
-                    </ol>
-                    <div class="d-grid gap-2">
-                        <a href="/onboarding" class="btn btn-primary">Start Onboarding Now</a>
+            
+            <div class="col-md-4">
+                <div class="card h-100 shadow">
+                    <div class="card-body text-center">
+                        <i class="fas fa-plus-circle fa-3x text-success mb-3"></i>
+                        <h3 class="card-title">New Employee</h3>
+                        <p class="card-text">Add a new employee to the system</p>
+                        <a href="/admin/new-employee.html" class="btn btn-success">Add Employee</a>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <img src="https://via.placeholder.com/600x400?text=HR+Workflow+Diagram" class="img-fluid rounded shadow" alt="HR Workflow Process">
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card h-100 shadow">
+                    <div class="card-body text-center">
+                        <i class="fas fa-clipboard-list fa-3x text-info mb-3"></i>
+                        <h3 class="card-title">Onboarding</h3>
+                        <p class="card-text">Start the onboarding process for a new hire</p>
+                        <a href="/admin/onboarding.html" class="btn btn-info">Onboarding</a>
+                    </div>
                 </div>
             </div>
-        </section>
-
-        <footer class="text-center py-4 mt-5">
-            <hr>
-            <p>HR Workflow System - Powered by LangGraph and LangChain</p>
-        </footer>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card h-100 shadow">
+                    <div class="card-body text-center">
+                        <i class="fas fa-sitemap fa-3x text-warning mb-3"></i>
+                        <h3 class="card-title">Workflow</h3>
+                        <p class="card-text">View and manage workflow processes</p>
+                        <a href="/admin/workflow.html" class="btn btn-warning">View Workflows</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card h-100 shadow">
+                    <div class="card-body text-center">
+                        <i class="fas fa-tachometer-alt fa-3x text-secondary mb-3"></i>
+                        <h3 class="card-title">Admin Dashboard</h3>
+                        <p class="card-text">Access administrator dashboard and controls</p>
+                        <a href="/admin/index.html" class="btn btn-secondary">Admin Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    
+    <footer class="mt-5 py-3 bg-light text-center">
+        <div class="container">
+            <p>HR Workflow System &copy; 2023</p>
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

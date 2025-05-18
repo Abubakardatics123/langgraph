@@ -1,0 +1,52 @@
+{
+  "success": true,
+  "employee": {
+    "name": "Muhammad Luqman",
+    "position": "BA",
+    "department": "Sales",
+    "startDate": "2025-05-23",
+    "equipmentNeeds": [
+      "Laptop",
+      "Mouse",
+      "Keyboard",
+      "Headset",
+      "External Monitor"
+    ],
+    "systemAccess": [
+      "Sales CRM",
+      "Microsoft Office 365",
+      "Email",
+      "Sales Analytics Tool",
+      "Internal Communication Platform"
+    ],
+    "trainingRequirements": [
+      "Sales CRM Training",
+      "Microsoft Office 365 Training",
+      "Email Etiquette",
+      "Sales Analytics Tool Training",
+      "Business Analyst Role Overview",
+      "Sales Department Orientation",
+      "Company Policies and Procedures",
+      "IT Security Best Practices"
+    ],
+    "status": "onboarding"
+  },
+  "hrNotes": [
+    "Employee information validated for Muhammad Luqman",
+    "Training plan created for Muhammad Luqman"
+  ],
+  "itNotes": [
+    "Equipment and access determined for Muhammad Luqman"
+  ],
+  "completed_steps": [
+    "employee_info",
+    "equipment_access",
+    "training_plan"
+  ],
+  "documents": [
+    "Welcome Letter",
+    "Equipment Request Form",
+    "Access Request Form",
+    "Training Plan"
+  ]
+}

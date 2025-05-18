@@ -1,0 +1,50 @@
+{
+  "success": true,
+  "employee": {
+    "name": "Jane Smith",
+    "position": "SE",
+    "department": "Engineering",
+    "startDate": "2025-08-01",
+    "equipmentNeeds": [
+      "Laptop",
+      "Mouse",
+      "Headphones",
+      "Dual Monitor"
+    ],
+    "systemAccess": [
+      "JIRA",
+      "GitLab",
+      "Engineering Shared Drive",
+      "VPN"
+    ],
+    "trainingRequirements": [
+      "Company Overview",
+      "Engineering Department Overview",
+      "JIRA Training",
+      "GitLab Training",
+      "VPN Setup",
+      "Dual Monitor Setup",
+      "Engineering Team Introduction",
+      "Job-Specific Training with Manager"
+    ],
+    "status": "completed"
+  },
+  "hrNotes": [
+    "Employee information validated for Jane Smith",
+    "Training plan created for Jane Smith"
+  ],
+  "itNotes": [
+    "Equipment and access determined for Jane Smith"
+  ],
+  "completed_steps": [
+    "employee_info",
+    "equipment_access",
+    "training_plan"
+  ],
+  "documents": [
+    "Welcome Letter",
+    "Equipment Request Form",
+    "Access Request Form",
+    "Training Plan"
+  ]
+}

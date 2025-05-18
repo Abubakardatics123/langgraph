@@ -13,6 +13,7 @@ import copy
 import traceback
 from functools import wraps
 from flask import Flask, request, jsonify, send_from_directory, session, redirect, url_for
+from datetime import datetime
 
 try:
     from flask_cors import CORS
@@ -29,44 +30,31 @@ except ImportError:
         print("Please install required packages with: pip install flask flask-cors")
         sys.exit(1)
 
-# Import the data store (don't import simplified_workflow for now)
+# Import the data store and fixed workflow instead of LangGraph
 try:
     import data_store
     print("Imported data store successfully")
-    HAS_WORKFLOW = False
     
-    # Try to import LangGraph modules
+    # Try to import fixed workflow modules
     try:
-        # Make sure import paths are correct
-        from hr_langgraph import start_onboarding_workflow, EmployeeInfo
-        from langgraph_integration import process_employee_with_langgraph, save_workflow_results
-        print("Imported LangGraph integration successfully")
-        HAS_LANGGRAPH = True
+        from fixed_workflow import process_employee, save_workflow_results
+        print("Imported fixed workflow integration successfully")
+        HAS_WORKFLOW = True
     except ImportError as e:
-        print(f"LangGraph integration not available due to import error: {e}")
-        print("Trying relative import...")
-        try:
-            # Try with relative import
-            sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-            from .hr_langgraph import start_onboarding_workflow, EmployeeInfo
-            from .langgraph_integration import process_employee_with_langgraph, save_workflow_results
-            print("Imported LangGraph integration with relative import")
-            HAS_LANGGRAPH = True
-        except ImportError as e2:
-            print(f"Relative import also failed: {e2}")
-            HAS_LANGGRAPH = False
-        except Exception as e3:
-            print(f"Other error during LangGraph import: {e3}")
-            traceback.print_exc()
-            HAS_LANGGRAPH = False
+        print(f"Fixed workflow integration not available due to import error: {e}")
+        HAS_WORKFLOW = False
+    except Exception as e3:
+        print(f"Other error during workflow import: {e3}")
+        traceback.print_exc()
+        HAS_WORKFLOW = False
 except ImportError as e:
     print(f"ERROR: Required module not found: {e}")
     print("Error: Required packages not found. Please install the requirements:")
     print("pip install -r requirements.txt")
     sys.exit(1)
 
-# Initialize Flask app
-app = Flask(__name__, static_folder='frontend')
+# Initialize Flask app with proper static serving
+app = Flask(__name__, static_folder='frontend', static_url_path='')
 app.secret_key = 'hr_workflow_secret_key'  # Change this to a secure random key in production
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SESSION_COOKIE_SECURE'] = False  # Set to True in production with HTTPS
@@ -126,7 +114,7 @@ def login_page():
         return redirect('/admin')
     return send_from_directory('frontend', 'login.html')
 
-# Admin routes
+# Admin routes - properly handle static file references
 @app.route('/admin')
 @login_required
 def admin_dashboard():
@@ -139,11 +127,63 @@ def admin_employees():
     """Serve the admin employees page"""
     return send_from_directory('frontend', 'employees.html')
 
-@app.route('/admin/employees/new')
+@app.route('/admin/employees.html')
+@login_required
+def admin_employees_html():
+    """Additional route with extension for direct access"""
+    return send_from_directory('frontend', 'employees.html')
+
+@app.route('/admin/new-employee')
 @login_required
 def admin_new_employee():
     """Serve the admin new employee page"""
-    return send_from_directory('frontend', 'new-process.html')
+    return send_from_directory('frontend/admin/employees', 'new.html')
+
+@app.route('/admin/new-employee.html')
+@login_required
+def admin_new_employee_html():
+    """Additional route with extension for direct access"""
+    return send_from_directory('frontend/admin/employees', 'new.html')
+
+@app.route('/admin/employees/new')
+@login_required
+def admin_employees_new():
+    """Additional route for nested URL structure"""
+    return send_from_directory('frontend/admin/employees', 'new.html')
+
+@app.route('/admin/index.html')
+@login_required
+def admin_index_html():
+    """Additional route with extension for direct access"""
+    return send_from_directory('frontend', 'admin.html')
+
+@app.route('/admin/onboarding.html')
+@login_required
+def admin_onboarding_html():
+    """Additional route with extension for direct access"""
+    return send_from_directory('frontend', 'onboarding.html')
+
+# Add route for CSS/JS assets when accessed from admin routes
+@app.route('/admin/css/<path:filename>')
+def admin_css(filename):
+    """Serve CSS files for admin routes"""
+    return send_from_directory('frontend/css', filename)
+
+@app.route('/admin/js/<path:filename>')
+def admin_js(filename):
+    """Serve JS files for admin routes"""
+    return send_from_directory('frontend/js', filename)
+
+# Add routes for nested paths
+@app.route('/admin/employees/css/<path:filename>')
+def admin_employees_css(filename):
+    """Serve CSS files for admin/employees routes"""
+    return send_from_directory('frontend/css', filename)
+
+@app.route('/admin/employees/js/<path:filename>')
+def admin_employees_js(filename):
+    """Serve JS files for admin/employees routes"""
+    return send_from_directory('frontend/js', filename)
 
 @app.route('/admin/employees/<employee_id>')
 @login_required
@@ -228,11 +268,11 @@ def start_onboarding():
             "employee_id": employee["id"]
         }
         
-        # Check if LangGraph is available
-        if HAS_LANGGRAPH:
+        # Check if workflow is available
+        if HAS_WORKFLOW:
             try:
-                # Process the employee with LangGraph workflow
-                print(f"Processing employee {data['name']} with LangGraph workflow")
+                # Process the employee with simplified workflow
+                print(f"Processing employee {data['name']} with simplified workflow")
                 
                 # Ensure equipment and access data are present
                 if "equipment" not in data:
@@ -241,7 +281,7 @@ def start_onboarding():
                     data["access"] = {"email": True, "github": True, "slack": True}
                 
                 # Process the employee
-                workflow_result = process_employee_with_langgraph(data)
+                workflow_result = process_employee(data)
                 
                 # Save workflow results
                 if workflow_result["success"]:
@@ -250,42 +290,36 @@ def start_onboarding():
                     print(f"Workflow results saved to {results_file}")
                     
                     # Update employee record with workflow info
-                    data_store.update_employee(employee["id"], {
-                        "status": "onboarding",
+                    updated_data = {
+                        "status": "completed",
+                        "equipmentNeeds": workflow_result.get("employee", {}).get("equipmentNeeds", []),
+                        "systemAccess": workflow_result.get("employee", {}).get("systemAccess", []),
+                        "trainingRequirements": workflow_result.get("employee", {}).get("trainingRequirements", []),
                         "documents": workflow_result.get("documents", []),
                         "workflow_status": "processed",
                         "workflow_completed_steps": workflow_result.get("completed_steps", [])
-                    })
+                    }
                     
-                    # Add workflow information to result
-                    result["workflow"] = {
-                        "status": "success",
-                        "steps_completed": len(workflow_result.get("completed_steps", [])),
-                        "documents_prepared": len(workflow_result.get("documents", [])),
-                    }
+                    # Update the employee record
+                    updated_employee = data_store.update_employee(employee["id"], updated_data)
+                    
+                    # Return the workflow result directly, which includes the employee data
+                    return jsonify(workflow_result)
                 else:
-                    print(f"LangGraph workflow failed for {data['name']}: {workflow_result.get('error', 'Unknown error')}")
-                    result["workflow"] = {
-                        "status": "failed",
-                        "error": workflow_result.get("error", "Unknown error")
-                    }
+                    print(f"Workflow failed for {data['name']}: {workflow_result.get('error', 'Unknown error')}")
+                    return jsonify({"error": workflow_result.get("error", "Unknown error")}), 500
             except Exception as workflow_error:
-                print(f"Error executing LangGraph workflow: {str(workflow_error)}")
+                print(f"Error executing workflow: {str(workflow_error)}")
                 traceback.print_exc()
-                result["workflow"] = {
-                    "status": "error",
-                    "message": f"Error executing workflow: {str(workflow_error)}"
-                }
+                return jsonify({"error": f"Error executing workflow: {str(workflow_error)}"}), 500
         else:
-            # Use simple process without LangGraph
-            print(f"LangGraph not available, using simple process for {data['name']}")
-            result["workflow"] = {
-                "status": "skipped",
-                "message": "LangGraph workflow not available"
-            }
+            # Use simple process without workflow
+            print(f"Workflow not available, using simple process for {data['name']}")
+            return jsonify({
+                "error": "Workflow integration not available. Please contact IT support."
+            }), 500
         
         print(f"Process completed successfully for {data['name']}")
-        return jsonify(result)
     except Exception as e:
         print(f"ERROR in start_onboarding: {str(e)}")
         traceback.print_exc()
@@ -474,12 +508,90 @@ def get_employee_workflow(employee_id):
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
 
+@app.route('/api/admin/employees/pending', methods=['GET'])
+@login_required
+def get_pending_employees():
+    """Get all employees with pending status"""
+    try:
+        print("API: Fetching pending employees")
+        
+        # Get all employees from data store
+        all_employees = data_store.get_all_employees()
+        
+        # Filter for pending status
+        pending_employees = [emp for emp in all_employees 
+                          if emp.get('status', '').lower() in ['pending', 'new', 'in progress', 'onboarding']]
+        
+        print(f"API: Returning {len(pending_employees)} pending employees")
+        
+        # Create response with CORS headers
+        response = jsonify({"employees": pending_employees})
+        response.headers.add('Access-Control-Allow-Credentials', 'true')
+        response.headers.add('Access-Control-Allow-Origin', request.headers.get('Origin', '*'))
+        
+        return response
+    except Exception as e:
+        print("Error fetching pending employees:", e)
+        traceback.print_exc()
+        return jsonify({"error": str(e), "details": traceback.format_exc()}), 500
+
+@app.route('/api/admin/employees/complete-onboarding/<employee_id>', methods=['POST'])
+@login_required
+def complete_employee_onboarding(employee_id):
+    """Complete onboarding for an employee"""
+    try:
+        print(f"API: Completing onboarding for employee {employee_id}")
+        
+        # Get the employee
+        employee = data_store.get_employee(employee_id)
+        if not employee:
+            return jsonify({"error": "Employee not found"}), 404
+            
+        # Update status and add completed date
+        updated_data = {
+            "status": "Completed",
+            "onboarding_completed_at": datetime.now().isoformat()
+        }
+        
+        # Update the employee
+        updated = data_store.update_employee(employee_id, updated_data)
+        
+        if updated:
+            return jsonify({
+                "success": True, 
+                "message": f"Onboarding completed for {updated.get('name')}",
+                "employee": updated
+            })
+        else:
+            return jsonify({"error": "Failed to update employee"}), 500
+            
+    except Exception as e:
+        print(f"Error completing onboarding: {e}")
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
+
+# Run the server if this file is executed directly
 if __name__ == '__main__':
+    # Forcefully kill any process using port 3000
+    import os
+    import signal
+    import subprocess
+    import time
+    
+    # Kill all processes using port 3000
+    try:
+        print("Ensuring port 3000 is free...")
+        os.system("pkill -f 'python.*3000'")
+        # Wait a moment to ensure processes are terminated
+        time.sleep(1)
+    except Exception as e:
+        print(f"Error killing processes: {e}")
+    
     # Create the frontend directory if it doesn't exist
     if not os.path.exists('frontend'):
         os.makedirs('frontend')
         print("Created frontend directory")
     
-    # Run the Flask app
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port, debug=True) 
+    # Run the Flask app on port 3000
+    print("Starting HR Workflow app on port 3000")
+    app.run(host='0.0.0.0', port=3000, debug=True) 

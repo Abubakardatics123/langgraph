@@ -1,0 +1,44 @@
+{
+  "success": true,
+  "employee_name": "Test User",
+  "completed_steps": [
+    "employee_info",
+    "equipment_access",
+    "training_plan"
+  ],
+  "documents": [
+    "Welcome Letter",
+    "Equipment Request Form",
+    "Access Request Form",
+    "Training Plan"
+  ],
+  "equipmentNeeds": [
+    "Laptop",
+    "Mouse",
+    "Headphones",
+    "External Monitor"
+  ],
+  "systemAccess": [
+    "JIRA",
+    "TestRail",
+    "QA Environment",
+    "Version Control System (VCS)"
+  ],
+  "trainingRequirements": [
+    "Introduction to QA Department",
+    "JIRA Training",
+    "TestRail Training",
+    "QA Environment Training",
+    "Version Control System (VCS) Training",
+    "Laptop and Peripheral Setup",
+    "QA Process and Procedures Overview"
+  ],
+  "status": "processed",
+  "hrNotes": [
+    "Employee information validated for Test User",
+    "Training plan created for Test User"
+  ],
+  "itNotes": [
+    "Equipment and access determined for Test User"
+  ]
+}

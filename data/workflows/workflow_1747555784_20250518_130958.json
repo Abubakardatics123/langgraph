@@ -1,0 +1,46 @@
+{
+  "success": true,
+  "employee_name": "Emily Johnson",
+  "completed_steps": [
+    "employee_info",
+    "equipment_access",
+    "training_plan"
+  ],
+  "documents": [
+    "Welcome Letter",
+    "Equipment Request Form",
+    "Access Request Form",
+    "Training Plan"
+  ],
+  "equipmentNeeds": [
+    "Laptop with Microsoft Office and Excel",
+    "Dual monitors",
+    "Comfortable keyboard and mouse",
+    "Secure external hard drive for data storage"
+  ],
+  "systemAccess": [
+    "Analytics database",
+    "Data visualization tools (e.g. Tableau, Power BI)",
+    "Microsoft Azure or Google Cloud Platform",
+    "Company intranet and file sharing system",
+    "Statistical analysis software (e.g. R, Python, SAS)"
+  ],
+  "trainingRequirements": [
+    "Microsoft Office and Excel training",
+    "Data visualization tools training (e.g. Tableau, Power BI)",
+    "Microsoft Azure or Google Cloud Platform training",
+    "Statistical analysis software training (e.g. R, Python, SAS)",
+    "Company intranet and file sharing system training",
+    "Data security and storage best practices",
+    "Analytics database training",
+    "Data analysis and reporting best practices"
+  ],
+  "status": "processed",
+  "hrNotes": [
+    "Employee information validated for Emily Johnson",
+    "Training plan created for Emily Johnson"
+  ],
+  "itNotes": [
+    "Equipment and access determined for Emily Johnson"
+  ]
+}

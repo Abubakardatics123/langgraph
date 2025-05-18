@@ -1,0 +1,48 @@
+{
+  "success": true,
+  "employee_name": "Muhammad Luqman",
+  "completed_steps": [
+    "employee_info",
+    "equipment_access",
+    "training_plan"
+  ],
+  "documents": [
+    "Welcome Letter",
+    "Equipment Request Form",
+    "Access Request Form",
+    "Training Plan"
+  ],
+  "equipmentNeeds": [
+    "Laptop",
+    "Mouse",
+    "Keyboard",
+    "Headphones",
+    "Marketing Software (e.g. Adobe Creative Cloud)"
+  ],
+  "systemAccess": [
+    "Email (Company Domain)",
+    "Marketing Collaboration Tools (e.g. Asana, Trello)",
+    "Company Intranet",
+    "Marketing Data Analytics Tools (e.g. Google Analytics)",
+    "Department-specific Software (e.g. Marketing Asset Management)"
+  ],
+  "trainingRequirements": [
+    "Company Email Etiquette",
+    "Marketing Software Training (Adobe Creative Cloud)",
+    "Marketing Collaboration Tools (Asana, Trello)",
+    "Marketing Data Analytics Tools (Google Analytics)",
+    "Department-specific Software Training (Marketing Asset Management)",
+    "Company Intranet Navigation",
+    "Marketing Asset Management Best Practices",
+    "Time Management and Prioritization for BAs",
+    "Marketing Team Onboarding and Expectations"
+  ],
+  "status": "processed",
+  "hrNotes": [
+    "Employee information validated for Muhammad Luqman",
+    "Training plan created for Muhammad Luqman"
+  ],
+  "itNotes": [
+    "Equipment and access determined for Muhammad Luqman"
+  ]
+}

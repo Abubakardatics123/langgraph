@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Employee - HR Workflow Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/admin-styles.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar">
+                <div class="position-sticky">
+                    <div class="sidebar-header text-center py-4 text-white">
+                        <h3>HR Admin</h3>
+                        <p>Onboarding Workflow</p>
+                    </div>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/index.html" id="nav-dashboard">
+                                <i class="fas fa-tachometer-alt me-2"></i>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/employees.html" id="nav-employees">
+                                <i class="fas fa-users me-2"></i>
+                                Employees
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/admin/new-employee.html" id="nav-new-employee">
+                                <i class="fas fa-plus-circle me-2"></i>
+                                New Employee
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/onboarding.html">
+                                <i class="fas fa-user-plus me-2"></i>
+                                Onboarding Form
+                            </a>
+                        </li>
+                        <li class="nav-item mt-3">
+                            <a class="nav-link text-danger" href="#" id="logout-btn">
+                                <i class="fas fa-sign-out-alt me-2"></i>
+                                Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2" id="page-title">Add New Employee</h1>
+                </div>
+
+                <!-- New Employee Form -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 fw-bold text-primary">Employee Information</h6>
+                    </div>
+                    <div class="card-body">
+                        <form id="new-employee-form">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="name" class="form-label">Full Name</label>
+                                        <input type="text" class="form-control" id="name" name="name" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="email" name="email" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="position" class="form-label">Position</label>
+                                        <input type="text" class="form-control" id="position" name="position" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="department" class="form-label">Department</label>
+                                        <select class="form-select" id="department" name="department" required>
+                                            <option value="">Select a department</option>
+                                            <option value="Engineering">Engineering</option>
+                                            <option value="Marketing">Marketing</option>
+                                            <option value="Sales">Sales</option>
+                                            <option value="HR">Human Resources</option>
+                                            <option value="Finance">Finance</option>
+                                            <option value="Operations">Operations</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="startDate" class="form-label">Start Date</label>
+                                        <input type="date" class="form-control" id="startDate" name="startDate" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="manager" class="form-label">Manager</label>
+                                        <input type="text" class="form-control" id="manager" name="manager">
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <h5 class="mb-3">Onboarding Requirements</h5>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Equipment Needs</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="laptop" name="equipment[]" value="Laptop">
+                                            <label class="form-check-label" for="laptop">Laptop</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="desktop" name="equipment[]" value="Desktop">
+                                            <label class="form-check-label" for="desktop">Desktop</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="phone" name="equipment[]" value="Phone">
+                                            <label class="form-check-label" for="phone">Phone</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="monitor" name="equipment[]" value="Monitor">
+                                            <label class="form-check-label" for="monitor">Monitor</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">System Access</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="email" name="access[]" value="Email">
+                                            <label class="form-check-label" for="email">Email</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="crm" name="access[]" value="CRM">
+                                            <label class="form-check-label" for="crm">CRM</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="drive" name="access[]" value="Drive">
+                                            <label class="form-check-label" for="drive">Shared Drive</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="git" name="access[]" value="Git">
+                                            <label class="form-check-label" for="git">Git Access</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="notes" class="form-label">Additional Notes</label>
+                                        <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <button type="button" class="btn btn-secondary me-md-2" id="cancel-btn">Cancel</button>
+                                <button type="submit" class="btn btn-primary" id="submit-btn">Create Employee</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/new-employee.js"></script>
+</body>
+</html> 

@@ -7,7 +7,7 @@ from langchain_core.messages import HumanMessage, AIMessage
 from langchain_core.output_parsers import StrOutputParser
 from langchain_groq import ChatGroq
 from langgraph.graph import StateGraph, END
-from langgraph.persist import MemorySaver
+from langgraph_checkpoint import MemorySaver
 
 # Type definitions for our workflow
 class EmployeeInfo(TypedDict):

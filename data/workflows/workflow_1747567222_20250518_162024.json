@@ -1,0 +1,52 @@
+{
+  "success": true,
+  "employee": {
+    "name": "Muhammad Luqman",
+    "position": "Marketing Specialist",
+    "department": "Marketing",
+    "startDate": "2025-07-01",
+    "equipmentNeeds": [
+      "Laptop",
+      "Monitor",
+      "Headphones",
+      "Mouse",
+      "Keyboard"
+    ],
+    "systemAccess": [
+      "Microsoft Office",
+      "Adobe Creative Cloud",
+      "Email",
+      "Marketing Automation Tool"
+    ],
+    "trainingRequirements": [
+      "Company Overview",
+      "Marketing Department Orientation",
+      "Microsoft Office Training",
+      "Adobe Creative Cloud Tutorial",
+      "Email Etiquette",
+      "Marketing Automation Tool Training",
+      "Job-Specific Skills Training",
+      "IT Security and Best Practices",
+      "Onboarding Process and Timeline Review"
+    ],
+    "status": "completed"
+  },
+  "hrNotes": [
+    "Employee information validated for Muhammad Luqman",
+    "Training plan created for Muhammad Luqman"
+  ],
+  "itNotes": [
+    "Equipment and access determined for Muhammad Luqman"
+  ],
+  "completed_steps": [
+    "employee_info",
+    "equipment_access",
+    "training_plan"
+  ],
+  "documents": [
+    "Welcome Letter",
+    "Equipment Request Form",
+    "Access Request Form",
+    "Training Plan"
+  ]
+}

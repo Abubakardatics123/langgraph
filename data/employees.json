@@ -2,69 +2,11 @@
   {
     "name": "abubakar naeem",
     "position": "BA",
-    "department": "Marketing",
-    "startDate": "2025-05-02",
-    "equipmentNeeds": [
-      "Laptop",
-      "Mouse",
-      "Keyboard",
-      "Headset",
-      "Marketing Software License (e.g. Adobe Creative Cloud)"
-    ],
-    "systemAccess": [
-      "Email (Company Domain)",
-      "Marketing Automation Platform (MAP)",
-      "Customer Relationship Management (CRM) System",
-      "Intranet Access",
-      "Shared Drive Access (Marketing Department)"
-    ],
-    "trainingRequirements": [
-      "Company Orientation",
-      "Marketing Automation Training",
-      "CRM System Training",
-      "Marketing Software Training (Adobe Creative Cloud)",
-      "Email Etiquette and Best Practices",
-      "Marketing Department Onboarding",
-      "MAP Training",
-      "Intranet and Shared Drive Navigation"
-    ],
-    "status": "Completed",
-    "hrNotes": [
-      "Employee information validated for abubakar naeem",
-      "Training plan created for abubakar naeem"
-    ],
-    "itNotes": [
-      "Equipment and access determined for abubakar naeem"
-    ],
-    "id": "1747514238",
-    "created_at": "2025-05-18T01:37:18.809101",
-    "updated_at": "2025-05-18T01:37:18.809101"
-  },
-  {
-    "name": "abubakar naeem",
-    "position": "BA",
-    "department": "Marketing",
-    "startDate": "2025-05-08",
-    "id": "1747514644",
-    "created_at": "2025-05-18T01:44:04.652459",
-    "updated_at": "2025-05-18T01:44:04.652459",
-    "status": "New"
-  },
-  {
-    "name": "John Doe",
-    "position": "Software Engineer",
-    "department": "Engineering",
-    "startDate": "2023-09-01",
-    "id": "1747514689",
-    "created_at": "2025-05-18T01:44:49.713974",
-    "updated_at": "2025-05-18T01:44:49.713974",
-    "status": "New"
-  },
-  {
-    "name": "abubakar naeem",
-    "position": "BA",
-    "department": "Sales",
+    "department": "HR",
     "startDate": "2024-11-01",
+    "id": "1747515011",
+    "created_at": "2025-05-18T01:50:11.378697",
+    "updated_at": "2025-05-18T16:05:46.882518",
     "equipmentNeeds": [
       "Laptop",
       "Headset",
@@ -96,52 +38,7 @@
     ],
     "itNotes": [
       "Equipment and access determined for abubakar naeem"
-    ],
-    "id": "1747515011",
-    "created_at": "2025-05-18T01:50:11.378697",
-    "updated_at": "2025-05-18T01:50:11.378697"
-  },
-  {
-    "name": "abubakar naeem",
-    "position": "BA",
-    "department": "Sales",
-    "startDate": "2025-05-17",
-    "equipmentNeeds": [
-      "Laptop",
-      "Headset",
-      "Mouse",
-      "Scanner"
-    ],
-    "systemAccess": [
-      "Sales CRM",
-      "Email",
-      "Microsoft Office",
-      "Sales Analytics Tool"
-    ],
-    "trainingRequirements": [
-      "Sales CRM Training",
-      "Email Etiquette and Best Practices",
-      "Microsoft Office Suite",
-      "Sales Analytics Tool Training",
-      "Scanner Operation and Maintenance",
-      "Laptop and Peripheral Devices Orientation",
-      "Headset and Audio Equipment Usage",
-      "Mouse and Keyboard Familiarization",
-      "Business Analyst Role Overview",
-      "Sales Department Orientation",
-      "Company Policies and Procedures Overview"
-    ],
-    "status": "Completed",
-    "hrNotes": [
-      "Employee information validated for abubakar naeem",
-      "Training plan created for abubakar naeem"
-    ],
-    "itNotes": [
-      "Equipment and access determined for abubakar naeem"
-    ],
-    "id": "1747516343",
-    "created_at": "2025-05-18T02:12:23.536187",
-    "updated_at": "2025-05-18T02:12:23.536187"
+    ]
   },
   {
     "name": "abubakar naeem",
@@ -301,6 +198,11 @@
     "updated_at": "2025-05-18T02:15:53.657356"
   },
   {
+    "status": "Completed",
+    "onboarding_completed_at": "2025-05-18T16:10:52.648066",
+    "id": "1747518120",
+    "created_at": "2025-05-18T02:42:00.269629",
+    "updated_at": "2025-05-18T16:10:52.648331",
     "name": "Muhammad Luqman",
     "position": "BA",
     "department": "Marketing",
@@ -317,15 +219,819 @@
       "Orientation",
       "Department Training"
     ],
-    "status": "New",
     "hrNotes": [
       "Created without workflow processing"
     ],
     "itNotes": [
       "Basic equipment setup required"
+    ]
+  },
+  {
+    "status": "Completed",
+    "onboarding_completed_at": "2025-05-18T16:10:55.228828",
+    "id": "1747520725",
+    "created_at": "2025-05-18T03:25:25.419597",
+    "updated_at": "2025-05-18T16:10:55.229116",
+    "name": "Muhammad Luqman",
+    "position": "ASE",
+    "department": "Engineering",
+    "startDate": "2025-05-17"
+  },
+  {
+    "status": "Completed",
+    "onboarding_completed_at": "2025-05-18T16:22:45.304141",
+    "id": "1747520753",
+    "created_at": "2025-05-18T03:25:53.457920",
+    "updated_at": "2025-05-18T16:22:45.304445",
+    "name": "Muhammad Luqman",
+    "position": "HR",
+    "department": "Marketing",
+    "startDate": "2025-05-24"
+  },
+  {
+    "name": "Muhammad Luqman",
+    "position": "HR",
+    "department": "Marketing",
+    "startDate": "2025-05-16",
+    "status": "pending",
+    "id": "1747521081",
+    "created_at": "2025-05-18T03:31:21.227334",
+    "updated_at": "2025-05-18T03:31:21.227334"
+  },
+  {
+    "name": "Sarah Johnson",
+    "position": "Marketing Specialist",
+    "department": "Marketing",
+    "startDate": "2023-11-15",
+    "status": "pending",
+    "id": "1747521592",
+    "created_at": "2025-05-18T03:39:52.483656",
+    "updated_at": "2025-05-18T03:39:52.483656"
+  },
+  {
+    "name": "Muhammad Luqman",
+    "position": "HR",
+    "department": "Sales",
+    "startDate": "2025-05-23",
+    "status": "pending",
+    "id": "1747521619",
+    "created_at": "2025-05-18T03:40:19.178010",
+    "updated_at": "2025-05-18T03:40:19.178010"
+  },
+  {
+    "status": "onboarding",
+    "equipmentNeeds": [
+      "Laptop (MacBook Pro or equivalent)",
+      "24-inch 4K Monitor",
+      "Graphics Tablet (Wacom or equivalent)",
+      "Noise-cancelling headphones",
+      "Ergonomic keyboard and mouse"
     ],
-    "id": "1747518120",
-    "created_at": "2025-05-18T02:42:00.269629",
-    "updated_at": "2025-05-18T02:42:00.269629"
+    "systemAccess": [
+      "Adobe Creative Cloud (Photoshop, Illustrator, InDesign, etc.)",
+      "Sketch or Figma design tool",
+      "Jira or Asana project management tool",
+      "Company intranet and shared drives",
+      "Design team collaboration tools (e.g. Slack, Microsoft Teams)"
+    ],
+    "trainingRequirements": [
+      "UX Design principles and best practices",
+      "Adobe Creative Cloud (Photoshop, Illustrator, InDesign, etc.)",
+      "Sketch or Figma design tool",
+      "Jira or Asana project management tool",
+      "Company intranet and shared drives",
+      "Design team collaboration tools (e.g. Slack, Microsoft Teams)",
+      "Graphics Tablet (Wacom or equivalent) usage",
+      "Ergonomic keyboard and mouse usage",
+      "Noise-cancelling headphones usage",
+      "24-inch 4K Monitor usage",
+      "Laptop (MacBook Pro or equivalent) usage"
+    ],
+    "documents": [
+      "Welcome Letter",
+      "Equipment Request Form",
+      "Access Request Form",
+      "Training Plan"
+    ],
+    "workflow_status": "processed",
+    "workflow_completed_steps": [
+      "employee_info",
+      "equipment_access",
+      "training_plan"
+    ],
+    "id": "1747521981",
+    "created_at": "2025-05-18T03:46:21.609484",
+    "updated_at": "2025-05-18T03:46:24.918799",
+    "name": "Robert Wilson",
+    "position": "UX Designer",
+    "department": "Design",
+    "startDate": "2023-12-01"
+  },
+  {
+    "status": "onboarding",
+    "equipmentNeeds": [
+      "Laptop",
+      "Mouse",
+      "Keyboard",
+      "Headphones",
+      "Marketing Software (e.g. Adobe Creative Cloud)"
+    ],
+    "systemAccess": [
+      "Email (Company Domain)",
+      "Marketing Collaboration Tools (e.g. Asana, Trello)",
+      "Company Intranet",
+      "Marketing Data Analytics Tools (e.g. Google Analytics)",
+      "Department-specific Software (e.g. Marketing Asset Management)"
+    ],
+    "trainingRequirements": [
+      "Company Email Etiquette",
+      "Marketing Software Training (Adobe Creative Cloud)",
+      "Marketing Collaboration Tools (Asana, Trello)",
+      "Marketing Data Analytics Tools (Google Analytics)",
+      "Department-specific Software Training (Marketing Asset Management)",
+      "Company Intranet Navigation",
+      "Marketing Asset Management Best Practices",
+      "Time Management and Prioritization for BAs",
+      "Marketing Team Onboarding and Expectations"
+    ],
+    "documents": [
+      "Welcome Letter",
+      "Equipment Request Form",
+      "Access Request Form",
+      "Training Plan"
+    ],
+    "workflow_status": "processed",
+    "workflow_completed_steps": [
+      "employee_info",
+      "equipment_access",
+      "training_plan"
+    ],
+    "id": "1747522021",
+    "created_at": "2025-05-18T03:47:01.692820",
+    "updated_at": "2025-05-18T03:47:04.824289",
+    "name": "Muhammad Luqman",
+    "position": "BA",
+    "department": "Marketing",
+    "startDate": "2025-05-30"
+  },
+  {
+    "status": "onboarding",
+    "equipmentNeeds": [
+      "Laptop",
+      "Mouse",
+      "Keyboard",
+      "Headphones",
+      "Marketing Software (e.g. Adobe Creative Cloud)"
+    ],
+    "systemAccess": [
+      "Email (Company Domain)",
+      "Marketing Collaboration Tools (e.g. Asana, Trello)",
+      "Company Intranet",
+      "Marketing Data Analytics Tools (e.g. Google Analytics)",
+      "Department-specific Software (e.g. Marketing Asset Management)"
+    ],
+    "trainingRequirements": [
+      "Company Email Etiquette",
+      "Marketing Software (Adobe Creative Cloud) Basics",
+      "Marketing Collaboration Tools (Asana, Trello) Training",
+      "Company Intranet Navigation and Resources",
+      "Marketing Data Analytics Tools (Google Analytics) Fundamentals",
+      "Department-specific Software (Marketing Asset Management) Onboarding",
+      "Marketing Team Processes and Procedures",
+      "Company Security and Data Protection Policies"
+    ],
+    "documents": [
+      "Welcome Letter",
+      "Equipment Request Form",
+      "Access Request Form",
+      "Training Plan"
+    ],
+    "workflow_status": "processed",
+    "workflow_completed_steps": [
+      "employee_info",
+      "equipment_access",
+      "training_plan"
+    ],
+    "id": "1747555708",
+    "created_at": "2025-05-18T13:08:28.719281",
+    "updated_at": "2025-05-18T13:08:31.934698",
+    "name": "Muhammad Luqman",
+    "position": "BA",
+    "department": "Marketing",
+    "startDate": "2025-06-06"
+  },
+  {
+    "status": "onboarding",
+    "equipmentNeeds": [
+      "Laptop with Microsoft Office and Excel",
+      "Dual monitors",
+      "Comfortable keyboard and mouse",
+      "Secure external hard drive for data storage"
+    ],
+    "systemAccess": [
+      "Analytics database",
+      "Data visualization tools (e.g. Tableau, Power BI)",
+      "Microsoft Azure or Google Cloud Platform",
+      "Company intranet and file sharing system",
+      "Statistical analysis software (e.g. R, Python, SAS)"
+    ],
+    "trainingRequirements": [
+      "Microsoft Office and Excel training",
+      "Data visualization tools training (e.g. Tableau, Power BI)",
+      "Microsoft Azure or Google Cloud Platform training",
+      "Statistical analysis software training (e.g. R, Python, SAS)",
+      "Company intranet and file sharing system training",
+      "Data security and storage best practices",
+      "Analytics database training",
+      "Data analysis and reporting best practices"
+    ],
+    "documents": [
+      "Welcome Letter",
+      "Equipment Request Form",
+      "Access Request Form",
+      "Training Plan"
+    ],
+    "workflow_status": "processed",
+    "workflow_completed_steps": [
+      "employee_info",
+      "equipment_access",
+      "training_plan"
+    ],
+    "id": "1747555784",
+    "created_at": "2025-05-18T13:09:44.248056",
+    "updated_at": "2025-05-18T13:09:58.653332",
+    "name": "Emily Johnson",
+    "position": "Data Analyst",
+    "department": "Analytics",
+    "startDate": "2024-01-15"
+  },
+  {
+    "status": "onboarding",
+    "equipmentNeeds": [
+      "Laptop",
+      "Mouse",
+      "Keyboard",
+      "Headphones",
+      "Marketing Software (e.g. Adobe Creative Cloud)"
+    ],
+    "systemAccess": [
+      "Email (Company Domain)",
+      "Marketing Collaboration Tools (e.g. Asana, Trello)",
+      "Company Intranet",
+      "Marketing Data Analytics Tools (e.g. Google Analytics)",
+      "Department-specific Software (e.g. Marketing Asset Management)"
+    ],
+    "trainingRequirements": [
+      "Company Email Etiquette",
+      "Marketing Software (Adobe Creative Cloud) Training",
+      "Marketing Collaboration Tools (Asana, Trello) Training",
+      "Company Intranet Navigation",
+      "Marketing Data Analytics Tools (Google Analytics) Training",
+      "Department-specific Software (Marketing Asset Management) Training",
+      "Marketing Data Analytics Best Practices",
+      "Marketing Asset Management Best Practices",
+      "Time Management and Prioritization for Business Analysts",
+      "Effective Communication for Business Analysts"
+    ],
+    "documents": [
+      "Welcome Letter",
+      "Equipment Request Form",
+      "Access Request Form",
+      "Training Plan"
+    ],
+    "workflow_status": "processed",
+    "workflow_completed_steps": [
+      "employee_info",
+      "equipment_access",
+      "training_plan"
+    ],
+    "id": "1747555863",
+    "created_at": "2025-05-18T13:11:03.135475",
+    "updated_at": "2025-05-18T13:11:06.378189",
+    "name": "Muhammad Luqman",
+    "position": "BA",
+    "department": "Marketing",
+    "startDate": "2025-05-22"
+  },
+  {
+    "status": "onboarding",
+    "equipmentNeeds": [
+      "Laptop",
+      "Mouse",
+      "Headphones",
+      "External Monitor"
+    ],
+    "systemAccess": [
+      "JIRA",
+      "TestRail",
+      "QA Environment",
+      "Version Control System (VCS)"
+    ],
+    "trainingRequirements": [
+      "Introduction to QA Department",
+      "JIRA Training",
+      "TestRail Training",
+      "QA Environment Training",
+      "Version Control System (VCS) Training",
+      "Laptop and Peripheral Setup",
+      "QA Process and Procedures Overview"
+    ],
+    "documents": [
+      "Welcome Letter",
+      "Equipment Request Form",
+      "Access Request Form",
+      "Training Plan"
+    ],
+    "workflow_status": "processed",
+    "workflow_completed_steps": [
+      "employee_info",
+      "equipment_access",
+      "training_plan"
+    ],
+    "id": "1747556030",
+    "created_at": "2025-05-18T13:13:50.757347",
+    "updated_at": "2025-05-18T13:13:53.606830",
+    "name": "Test User",
+    "position": "Tester",
+    "department": "QA",
+    "startDate": "2024-06-01"
+  },
+  {
+    "status": "onboarding",
+    "equipmentNeeds": [
+      "Laptop",
+      "Mouse",
+      "Keyboard",
+      "Headset",
+      "External Monitor"
+    ],
+    "systemAccess": [
+      "Sales CRM",
+      "Microsoft Office 365",
+      "Email",
+      "Sales Analytics Tool",
+      "Internal Communication Platform"
+    ],
+    "trainingRequirements": [
+      "Sales CRM Training",
+      "Microsoft Office 365 Training",
+      "Email Etiquette",
+      "Sales Analytics Tool Training",
+      "Business Analyst Role Overview",
+      "Sales Department Orientation",
+      "Company Policies and Procedures",
+      "IT Security Best Practices"
+    ],
+    "documents": [
+      "Welcome Letter",
+      "Equipment Request Form",
+      "Access Request Form",
+      "Training Plan"
+    ],
+    "workflow_status": "processed",
+    "workflow_completed_steps": [
+      "employee_info",
+      "equipment_access",
+      "training_plan"
+    ],
+    "id": "1747556113",
+    "created_at": "2025-05-18T13:15:13.896463",
+    "updated_at": "2025-05-18T13:15:16.620124",
+    "name": "Muhammad Luqman",
+    "position": "BA",
+    "department": "Sales",
+    "startDate": "2025-05-23"
+  },
+  {
+    "status": "onboarding",
+    "equipmentNeeds": [
+      "Laptop",
+      "Mouse",
+      "Keyboard",
+      "Headset",
+      "External Monitor"
+    ],
+    "systemAccess": [
+      "Sales CRM",
+      "Microsoft Office 365",
+      "Email (Company Domain)",
+      "Sales Analytics Tool",
+      "Internal Communication Platform"
+    ],
+    "trainingRequirements": [
+      "Sales CRM Training",
+      "Microsoft Office 365 Training",
+      "Email Etiquette and Best Practices",
+      "Sales Analytics Tool Training",
+      "Internal Communication Platform Training",
+      "Business Analyst Role Overview",
+      "Sales Department Orientation",
+      "Company Policies and Procedures Overview",
+      "IT Security and Data Protection Training"
+    ],
+    "documents": [
+      "Welcome Letter",
+      "Equipment Request Form",
+      "Access Request Form",
+      "Training Plan"
+    ],
+    "workflow_status": "processed",
+    "workflow_completed_steps": [
+      "employee_info",
+      "equipment_access",
+      "training_plan"
+    ],
+    "id": "1747556136",
+    "created_at": "2025-05-18T13:15:36.128854",
+    "updated_at": "2025-05-18T13:15:38.928911",
+    "name": "Muhammad Luqman",
+    "position": "BA",
+    "department": "Sales",
+    "startDate": "2025-05-15"
+  },
+  {
+    "status": "onboarding",
+    "equipmentNeeds": [
+      "Laptop",
+      "Mouse",
+      "Keyboard",
+      "Headset",
+      "External Monitor"
+    ],
+    "systemAccess": [
+      "Sales CRM",
+      "Microsoft Office 365",
+      "Email",
+      "Sales Analytics Tool",
+      "Internal Communication Platform"
+    ],
+    "trainingRequirements": [
+      "Sales CRM Training",
+      "Microsoft Office 365 Training",
+      "Email Etiquette and Best Practices",
+      "Sales Analytics Tool Training",
+      "Internal Communication Platform Training",
+      "Business Analyst Role and Responsibilities",
+      "Sales Department Overview",
+      "Company Policies and Procedures"
+    ],
+    "documents": [
+      "Welcome Letter",
+      "Equipment Request Form",
+      "Access Request Form",
+      "Training Plan"
+    ],
+    "workflow_status": "processed",
+    "workflow_completed_steps": [
+      "employee_info",
+      "equipment_access",
+      "training_plan"
+    ],
+    "id": "1747556164",
+    "created_at": "2025-05-18T13:16:04.894831",
+    "updated_at": "2025-05-18T13:16:07.678424",
+    "name": "Muhammad",
+    "position": "BA",
+    "department": "Sales",
+    "startDate": "2025-05-23"
+  },
+  {
+    "status": "completed",
+    "equipmentNeeds": [
+      "Laptop",
+      "Mouse",
+      "Keyboard",
+      "Headset"
+    ],
+    "systemAccess": [
+      "HR System",
+      "Employee Database",
+      "Sales CRM",
+      "Microsoft Office 365"
+    ],
+    "trainingRequirements": [
+      "HR System Training",
+      "Employee Database Training",
+      "Sales CRM Training",
+      "Microsoft Office 365 Training",
+      "Laptop and Peripheral Training",
+      "Sales Department Orientation",
+      "Company Policy Overview",
+      "Job-Specific Training for HR Role in Sales Department"
+    ],
+    "documents": [
+      "Welcome Letter",
+      "Equipment Request Form",
+      "Access Request Form",
+      "Training Plan"
+    ],
+    "workflow_status": "processed",
+    "workflow_completed_steps": [
+      "employee_info",
+      "equipment_access",
+      "training_plan"
+    ],
+    "id": "1747556487",
+    "created_at": "2025-05-18T13:21:27.694831",
+    "updated_at": "2025-05-18T13:21:30.730020",
+    "name": "Muhammad Luqman",
+    "position": "HR",
+    "department": "Sales",
+    "startDate": "2025-05-01"
+  },
+  {
+    "status": "completed",
+    "equipmentNeeds": [
+      "Laptop",
+      "Monitor",
+      "Keyboard",
+      "Mouse"
+    ],
+    "systemAccess": [
+      "HR System",
+      "Employee Database",
+      "Microsoft Office Suite",
+      "Company Intranet"
+    ],
+    "trainingRequirements": [
+      "HR System Training",
+      "Employee Database Training",
+      "Microsoft Office Suite Training",
+      "Company Intranet Training",
+      "HR Process and Policy Training",
+      "Employee Data Management Training",
+      "Marketing Department Overview Training"
+    ],
+    "documents": [
+      "Welcome Letter",
+      "Equipment Request Form",
+      "Access Request Form",
+      "Training Plan"
+    ],
+    "workflow_status": "processed",
+    "workflow_completed_steps": [
+      "employee_info",
+      "equipment_access",
+      "training_plan"
+    ],
+    "id": "1747565289",
+    "created_at": "2025-05-18T15:48:09.185072",
+    "updated_at": "2025-05-18T15:48:12.654429",
+    "name": "Moosa",
+    "position": "HR",
+    "department": "Marketing",
+    "startDate": "2025-06-05"
+  },
+  {
+    "status": "completed",
+    "equipmentNeeds": [
+      "Laptop",
+      "Monitor",
+      "Keyboard",
+      "Mouse"
+    ],
+    "systemAccess": [
+      "HR System",
+      "Employee Database",
+      "Microsoft Office Suite",
+      "Company Intranet"
+    ],
+    "trainingRequirements": [
+      "HR System Training",
+      "Employee Database Navigation",
+      "Company Intranet Orientation",
+      "Microsoft Office Suite Training",
+      "HR Process and Policy Overview",
+      "Equipment Setup and Troubleshooting"
+    ],
+    "documents": [
+      "Welcome Letter",
+      "Equipment Request Form",
+      "Access Request Form",
+      "Training Plan"
+    ],
+    "workflow_status": "processed",
+    "workflow_completed_steps": [
+      "employee_info",
+      "equipment_access",
+      "training_plan"
+    ],
+    "id": "1747565583",
+    "created_at": "2025-05-18T15:53:03.500737",
+    "updated_at": "2025-05-18T15:53:06.133028",
+    "name": "Moosa",
+    "position": "HR",
+    "department": "Sales",
+    "startDate": "2025-05-30"
+  },
+  {
+    "status": "completed",
+    "equipmentNeeds": [
+      "Laptop",
+      "Mouse",
+      "Keyboard",
+      "Headset"
+    ],
+    "systemAccess": [
+      "HR System",
+      "Employee Database",
+      "Sales CRM",
+      "Microsoft Office 365"
+    ],
+    "trainingRequirements": [
+      "HR System Training",
+      "Employee Database Training",
+      "Sales CRM Training",
+      "Microsoft Office 365 Training",
+      "HR Process and Policy Overview",
+      "Introduction to Sales Department Operations",
+      "Equipment Usage and Best Practices",
+      "Company Culture and Expectations Orientation"
+    ],
+    "documents": [
+      "Welcome Letter",
+      "Equipment Request Form",
+      "Access Request Form",
+      "Training Plan"
+    ],
+    "workflow_status": "processed",
+    "workflow_completed_steps": [
+      "employee_info",
+      "equipment_access",
+      "training_plan"
+    ],
+    "id": "1747566318",
+    "created_at": "2025-05-18T16:05:18.446943",
+    "updated_at": "2025-05-18T16:05:21.407584",
+    "name": "Muhammad Luqman",
+    "position": "HR",
+    "department": "Sales",
+    "startDate": "2023-02-23"
+  },
+  {
+    "name": "Muhammad Luqman",
+    "position": "SE",
+    "department": "Engineering",
+    "startDate": "2025-05-18",
+    "status": "pending",
+    "id": "1747566804",
+    "created_at": "2025-05-18T16:13:24.095031",
+    "updated_at": "2025-05-18T16:13:24.095031"
+  },
+  {
+    "name": "Muhammad Luqman",
+    "position": "SE",
+    "department": "Marketing",
+    "startDate": "2025-05-22",
+    "status": "pending",
+    "id": "1747566838",
+    "created_at": "2025-05-18T16:13:58.282346",
+    "updated_at": "2025-05-18T16:13:58.282346"
+  },
+  {
+    "status": "completed",
+    "equipmentNeeds": [
+      "Laptop",
+      "Monitor",
+      "Headphones",
+      "Mouse",
+      "Keyboard"
+    ],
+    "systemAccess": [
+      "Microsoft Office",
+      "Adobe Creative Cloud",
+      "Email",
+      "Marketing Automation Tool"
+    ],
+    "trainingRequirements": [
+      "Company Overview",
+      "Marketing Department Orientation",
+      "Microsoft Office Training",
+      "Adobe Creative Cloud Tutorial",
+      "Email Etiquette",
+      "Marketing Automation Tool Training",
+      "Job-Specific Skills Training",
+      "IT Security and Best Practices",
+      "Onboarding Process and Timeline Review"
+    ],
+    "documents": [
+      "Welcome Letter",
+      "Equipment Request Form",
+      "Access Request Form",
+      "Training Plan"
+    ],
+    "workflow_status": "processed",
+    "workflow_completed_steps": [
+      "employee_info",
+      "equipment_access",
+      "training_plan"
+    ],
+    "id": "1747566987",
+    "created_at": "2025-05-18T16:16:27.422116",
+    "updated_at": "2025-05-18T16:16:30.702741",
+    "name": "Muhammad Luqman",
+    "position": "Marketing Specialist",
+    "department": "Marketing",
+    "startDate": "2025-07-01"
+  },
+  {
+    "name": "Muhammad Luqman",
+    "position": "SE",
+    "department": "Marketing",
+    "startDate": "2025-05-08",
+    "status": "pending",
+    "id": "1747567045",
+    "created_at": "2025-05-18T16:17:25.412632",
+    "updated_at": "2025-05-18T16:17:25.412632"
+  },
+  {
+    "status": "completed",
+    "equipmentNeeds": [
+      "Laptop",
+      "Monitor",
+      "Headphones",
+      "Mouse",
+      "Keyboard"
+    ],
+    "systemAccess": [
+      "Microsoft Office",
+      "Adobe Creative Cloud",
+      "Email",
+      "Marketing Automation Tool"
+    ],
+    "trainingRequirements": [
+      "Company Overview",
+      "Marketing Department Orientation",
+      "Microsoft Office Training",
+      "Adobe Creative Cloud Tutorial",
+      "Email Etiquette",
+      "Marketing Automation Tool Training",
+      "Job-Specific Skills Training",
+      "IT Security and Best Practices",
+      "Onboarding Process and Timeline Review"
+    ],
+    "documents": [
+      "Welcome Letter",
+      "Equipment Request Form",
+      "Access Request Form",
+      "Training Plan"
+    ],
+    "workflow_status": "processed",
+    "workflow_completed_steps": [
+      "employee_info",
+      "equipment_access",
+      "training_plan"
+    ],
+    "id": "1747567222",
+    "created_at": "2025-05-18T16:20:22.040550",
+    "updated_at": "2025-05-18T16:20:24.452358",
+    "name": "Muhammad Luqman",
+    "position": "Marketing Specialist",
+    "department": "Marketing",
+    "startDate": "2025-07-01"
+  },
+  {
+    "status": "completed",
+    "equipmentNeeds": [
+      "Laptop",
+      "Mouse",
+      "Headphones",
+      "Dual Monitor"
+    ],
+    "systemAccess": [
+      "JIRA",
+      "GitLab",
+      "Engineering Shared Drive",
+      "VPN"
+    ],
+    "trainingRequirements": [
+      "Company Overview",
+      "Engineering Department Overview",
+      "JIRA Training",
+      "GitLab Training",
+      "VPN Setup",
+      "Dual Monitor Setup",
+      "Engineering Team Introduction",
+      "Job-Specific Training with Manager"
+    ],
+    "documents": [
+      "Welcome Letter",
+      "Equipment Request Form",
+      "Access Request Form",
+      "Training Plan"
+    ],
+    "workflow_status": "processed",
+    "workflow_completed_steps": [
+      "employee_info",
+      "equipment_access",
+      "training_plan"
+    ],
+    "id": "1747567227",
+    "created_at": "2025-05-18T16:20:27.943584",
+    "updated_at": "2025-05-18T16:20:30.307075",
+    "name": "Jane Smith",
+    "position": "SE",
+    "department": "Engineering",
+    "startDate": "2025-08-01"
   }
 ]

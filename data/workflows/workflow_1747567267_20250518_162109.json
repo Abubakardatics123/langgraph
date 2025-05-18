@@ -1,0 +1,50 @@
+{
+  "success": true,
+  "employee": {
+    "name": "Muhammad Luqman",
+    "position": "BA",
+    "department": "Engineering",
+    "startDate": "2025-05-08",
+    "equipmentNeeds": [
+      "Laptop",
+      "Mouse",
+      "Headphones",
+      "Whiteboard Marker"
+    ],
+    "systemAccess": [
+      "Jira",
+      "Microsoft Office",
+      "Engineering Department Folder",
+      "Google Drive"
+    ],
+    "trainingRequirements": [
+      "Engineering Department Orientation",
+      "Jira Training",
+      "Microsoft Office Training",
+      "Google Drive Training",
+      "Business Analyst Role Training",
+      "Engineering Department Process Training",
+      "IT Security Policy Training",
+      "Company Policy Training"
+    ],
+    "status": "completed"
+  },
+  "hrNotes": [
+    "Employee information validated for Muhammad Luqman",
+    "Training plan created for Muhammad Luqman"
+  ],
+  "itNotes": [
+    "Equipment and access determined for Muhammad Luqman"
+  ],
+  "completed_steps": [
+    "employee_info",
+    "equipment_access",
+    "training_plan"
+  ],
+  "documents": [
+    "Welcome Letter",
+    "Equipment Request Form",
+    "Access Request Form",
+    "Training Plan"
+  ]
+}

@@ -126,24 +126,77 @@ def determine_equipment_access(state):
         # Create a prompt for the LLM
         prompt = ChatPromptTemplate.from_messages([
             ("system", "You are an IT specialist helping with employee onboarding. "
-                      "Determine appropriate equipment and system access based on the role."),
+                      "Determine appropriate equipment and system access based on the role. "
+                      "Your response MUST be valid JSON with double quotes, containing ONLY 'equipment_needs' and 'system_access' lists "
+                      "with no additional text before or after the JSON."),
             ("user", "Based on the following employee information, list required equipment and system access:\n"
                     "Employee Name: {name}\n"
                     "Position: {position}\n"
                     "Department: {department}\n"
-                    "Respond in JSON format with 'equipment_needs' and 'system_access' as lists.")
+                    "Respond with ONLY a JSON object with 'equipment_needs' and 'system_access' as lists. "
+                    "Do not include any explanations or text outside the JSON.")
         ])
         
         # Define output parser for structured response
         parser = JsonOutputParser()
         
-        # Get response from LLM and parse
-        chain = prompt | llm | parser
-        response = chain.invoke({
-            "name": employee.name, 
-            "position": employee.position, 
-            "department": employee.department
-        })
+        # Initialize response with default values in case of failure
+        response = {
+            "equipment_needs": ["Laptop", "Monitor", "Keyboard", "Mouse"],
+            "system_access": ["Email", "Company Intranet", "Department Shared Drive"]
+        }
+        
+        # Try to get response from LLM and parse
+        try:
+            # Get response from LLM and parse
+            chain = prompt | llm | parser
+            llm_response = chain.invoke({
+                "name": employee.name, 
+                "position": employee.position, 
+                "department": employee.department
+            })
+            
+            # Only update response if we got a valid result
+            if llm_response is not None:
+                response = llm_response
+            
+        except Exception as json_error:
+            # Fallback if JSON parsing fails
+            print(f"JSON parsing failed: {json_error}")
+            print("Using fallback approach to extract equipment and access requirements")
+            
+            # Get raw response from LLM
+            raw_prompt = prompt.format(
+                name=employee.name,
+                position=employee.position,
+                department=employee.department
+            )
+            
+            message = HumanMessage(content=str(raw_prompt))
+            llm_response = llm.invoke([message])
+            content = llm_response.content
+            
+            # Try to extract JSON manually
+            import re
+            import json
+            
+            # Try to find JSON block
+            json_match = re.search(r'\{[\s\S]*\}', content)
+            if json_match:
+                json_str = json_match.group(0)
+                # Replace single quotes with double quotes
+                json_str = json_str.replace("'", '"')
+                
+                try:
+                    extracted_response = json.loads(json_str)
+                    print("Successfully extracted JSON using regex")
+                    if extracted_response is not None:
+                        response = extracted_response
+                except json.JSONDecodeError as e:
+                    print(f"Failed to parse extracted JSON: {e}")
+                    print("Using default equipment and access values")
+            else:
+                print("No JSON found in response, using default values")
         
         # Update employee information
         employee.equipment_needs = response.get("equipment_needs", [])
@@ -204,10 +257,21 @@ def create_training_plan(state):
         # Define output parser with robust error handling
         parser = JsonOutputParser()
         
+        # Initialize response with default values in case of failure
+        response = {
+            "training_requirements": [
+                "Company Orientation",
+                "Department Training",
+                "Role-specific Training",
+                "System Access Training",
+                "Equipment Training"
+            ]
+        }
+        
         try:
             # Get response from LLM and parse
             chain = prompt | llm | parser
-            response = chain.invoke({
+            llm_response = chain.invoke({
                 "name": employee.name, 
                 "position": employee.position, 
                 "department": employee.department,
@@ -215,6 +279,10 @@ def create_training_plan(state):
                 "access": employee.system_access,
                 "context": conversation_history
             })
+            
+            # Only update response if we got a valid result
+            if llm_response is not None:
+                response = llm_response
             
         except Exception as json_error:
             # Fallback if JSON parsing fails
@@ -247,29 +315,15 @@ def create_training_plan(state):
                 json_str = json_str.replace("'", '"')
                 
                 try:
-                    response = json.loads(json_str)
+                    extracted_response = json.loads(json_str)
+                    if extracted_response is not None:
+                        response = extracted_response
                 except json.JSONDecodeError:
-                    # Last resort fallback
-                    response = {
-                        "training_requirements": [
-                            "Company Orientation",
-                            "Department Training",
-                            "Role-specific Training",
-                            "System Access Training",
-                            "Equipment Training"
-                        ]
-                    }
+                    # Keep using default values defined above
+                    print("Failed to parse extracted JSON, using default training requirements")
             else:
-                # Last resort fallback
-                response = {
-                    "training_requirements": [
-                        "Company Orientation",
-                        "Department Training",
-                        "Role-specific Training",
-                        "System Access Training",
-                        "Equipment Training"
-                    ]
-                }
+                # Keep using default values defined above
+                print("No JSON found in response, using default training requirements")
         
         # Update employee information
         employee.training_requirements = response.get("training_requirements", [])
